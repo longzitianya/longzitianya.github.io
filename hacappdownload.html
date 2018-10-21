@@ -111,8 +111,12 @@
 
         function is_weixnOrQQ() {
             var ua = navigator.userAgent.toLowerCase();
-
-            return ua.match(/MicroMessenger/i) == "micromessenger" || (ua.match(/QQ/i)=="qq"&&ua.match(/mqqbrowser/i) != "mqqbrowser")
+            alert(ua);
+            var  isIos=!!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+            var isAndroid=u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端
+            var isIosQQ = (isIos && / QQ/i.test(navigator.userAgent));
+            var isAndroidQQ = (isAndroid && /mqqbrowser/i.test(ua) && /qq/i.test((ua).split('mqqbrowser')));
+            return ua.match(/MicroMessenger/i) == "micromessenger" || isIosQQ||isAndroidQQ;
         }
     </script>
 </head>
