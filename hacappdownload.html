@@ -112,7 +112,7 @@
         function is_weixnOrQQ() {
             var ua = navigator.userAgent.toLowerCase();
 
-            return ua.match(/MicroMessenger/i) == "micromessenger" || ua.match(/QQ/i)=="qq"
+            return ua.match(/MicroMessenger/i) == "micromessenger" || (ua.match(/QQ/i)=="qq"&&ua.match(/mqqbrowser/i) != "mqqbrowser")
         }
     </script>
 </head>
