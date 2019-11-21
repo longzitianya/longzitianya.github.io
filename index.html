@@ -30,12 +30,7 @@
 				var map =   new CMMap.Map("mapContainer", {center: new CMMap.LngLat(116.397428, 39.90923),zoom:13});
 				var marker= new CMMap['Marker']({
 					map: map,
-					position: new CMMap['LngLat'](116.397428, 39.90923),
-					icon: new CMMap['Icon']({
-					    size: new CMMap['Size'](32, 32),
-					    
-					    offset: new CMMap['Pixel'](0,0)
-					})
+					position: new CMMap['LngLat'](116.397428, 39.90923)
 				    });
 					
 					marker.setAnimation('CMMAP_ANIMATION_DROP');
