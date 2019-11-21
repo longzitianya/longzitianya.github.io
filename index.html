@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+	<head lang="en">
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,minimal-ui">
+		<title>点的掉落动画</title>
+
+		<style type="text/css">
+			body {
+				position: absolute;
+				margin: 0;
+				width: 100%;
+				height: 100%;
+			}
+			
+			#mapContainer {
+				left: 0px;
+				top: 0px;
+				width: 100%;
+				height: 100%;
+				float: left;
+			}
+		</style>
+		 <script type="text/javascript" src="http://sgdt.mlocso.com:8000/VectorMapAbility/jssdk/auth?v=2.0&key=1586sax375sk36n566b0rc5khzs836bh&name=bundle"></script>
+		<script>
+			function mapInit() {
+				var map =   new CMMap.Map("mapContainer", {center: new CMMap.LngLat(116.397428, 39.90923),zoom:13});
+
+					var marker = new CMMap.Marker({
+						position: new CMMap.LngLat(116.397428, 39.90923)
+					});
+					marker.setMap(map);
+					marker.setAnimation('CMMAP_ANIMATION_DROP');
+			}
+	if (window.attachEvent) {
+      window.attachEvent("onload", mapInit);//IE
+    } else {
+        window.addEventListener("load", mapInit, false);//FF
+    }
+		</script>
+	</head>
+
+	<body >
+
+		<div id="mapContainer" style="position: relative;"></div>
+
+	</body>
+
+</html>
