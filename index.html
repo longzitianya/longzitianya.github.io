@@ -22,12 +22,15 @@
 				float: left;
 			}
 		</style>
+		 <script  type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=4af62d0316bc14f5d241333961cddbb9&plugin=AMap.Geolocation" ></script>
 		 <script type="text/javascript" src="http://223.100.246.29:9091/SDKService/jssdk/auth?v=1.1&key=5592f4830d22caccc27546e61faf9048"></script>
 		<script src="//cdn.jsdelivr.net/npm/eruda"></script>
 	</head>
 
 	<body >
-
+		 <div style="position: absolute;left:10px;bottom:10px;z-index:10;">
+                <button  title='定位' onclick="getGeoL"  class="geoLocation"  ></button>
+            </div>
 		<div id="mapContainer" style="position: relative;"></div>
 
 	</body>
@@ -39,5 +42,24 @@
 			});
 			marker.setMap(map);
 			marker.setAnimation('CMMAP_ANIMATION_BOUNCE');
+		       var  dingweiMarker=null;
+			getGeoL(){
+			      // let self=this;
+				this.map.clearMap();
+				//self.map.destroy();
+				//self.map.createMap(lng,lat);
+				if(this.dingweiMarker===null){
+				  this.dingweiMarker= new CMMap.Marker({
+				    offset: new CMMap.Pixel(0,0),
+				    position: new CMMap.LngLat(123.479457 , 41.772413)
+				  });
+
+				 // self.map.panTo(new CMMap.LngLat(lng,lat));
+				  //self.map.setZoomAndCenter(14, new CMMap.LngLat(lng,lat));
+				}
+				this.dingweiMarker.setMap(this.map);
+				this.map.setZoomAndCenter(14, new CMMap.LngLat(123.479457 , 41.772413));
+				//self.map.add(self.dingweiMarker);
+			      }
 		</script>
 </html>
