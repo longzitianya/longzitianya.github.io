@@ -21,6 +21,23 @@
 				height: 100%;
 				float: left;
 			}
+			 .geoLocation{
+				background-size: 32px 32px!important;
+				background-image: url("icon_move_my_location.png")  !important ;
+				background-repeat: no-repeat;
+				width: 32px;
+				height:32px;
+				border: none;
+				border-radius: 15px;
+				background: #fff;
+				position: absolute;
+				bottom:250px;
+				left:10px;
+			    }
+			    .geoLocation:active,.geoLocation:focus{
+				border: none;
+				outline:none;
+			    }
 		</style>
 		 <script  type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=4af62d0316bc14f5d241333961cddbb9&plugin=AMap.Geolocation" ></script>
 		 <script type="text/javascript" src="http://sgdt.mlocso.com:8000/VectorMapAbility/jssdk/auth?v=2.0&key=1586sax375sk36n566b0rc5khzs836bh&name=bundle&plugin=CMMap.ToolBar,CMMap.AutoComplete"></script>
@@ -41,15 +58,14 @@
 				position: new CMMap.LngLat(116.397428, 39.90923)
 			});
 			marker.setMap(map);
-			marker.setAnimation('CMMAP_ANIMATION_BOUNCE');
 		       var  dingweiMarker=null;
 			function getGeoL(){
 			      // let self=this;
-				this.map.clearMap();
+				map.clearMap();
 				//self.map.destroy();
 				//self.map.createMap(lng,lat);
-				if(this.dingweiMarker===null){
-				  this.dingweiMarker= new CMMap.Marker({
+				if(dingweiMarker===null){
+				  dingweiMarker= new CMMap.Marker({
 				    offset: new CMMap.Pixel(0,0),
 				    position: new CMMap.LngLat(123.479457 , 41.772413)
 				  });
@@ -57,8 +73,8 @@
 				 // self.map.panTo(new CMMap.LngLat(lng,lat));
 				  //self.map.setZoomAndCenter(14, new CMMap.LngLat(lng,lat));
 				}
-				this.dingweiMarker.setMap(this.map);
-				this.map.setZoomAndCenter(14, new CMMap.LngLat(123.479457 , 41.772413));
+				dingweiMarker.setMap(map);
+				map.setZoomAndCenter(14, new CMMap.LngLat(123.479457 , 41.772413));
 				//self.map.add(self.dingweiMarker);
 			      }
 		</script>
