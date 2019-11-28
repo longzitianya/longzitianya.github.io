@@ -1,1 +1,68 @@
 
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <style>
+    html,
+    body,
+    #container {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+    </style>
+    <title>圆的绘制</title>
+    <script type="text/javascript" src="http://sgdt.mlocso.com:8000/VectorMapAbility/jssdk/auth?v=2.0&key=1586sax375sk36n566b0rc5khzs836bh&name=bundle"></script>
+</head>
+<body >
+<div id="container"></div>
+
+<script type="text/javascript">
+
+    function initMap() {
+        var center = [116.433322, 39.900256];
+        var radius = 1000;
+        var map = new CMMap.Map("container", {
+            center: center,
+            zoom: 14
+        });
+		var marker2 = new CMMap.Marker({
+          offset: new CMMap.Pixel(0,0),
+          //icon: iconCar, // 添加 Icon 实例
+          position: center, // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+          title: 'car'
+        });
+        //marker2.setMap(self.map);
+        map.add(marker2);
+        
+       var centerdata=[{"lng":116.433322, "lat":39.900236,"radius":100},{"lng":116.533342, "lat":39.900256,"radius":200},{"lng":116.733322, "lat":39.900256,"radius":500}];
+            
+         centerdata.forEach(function(value, index, array) {
+             var circle = new CMMap.Circle({
+              center: new CMMap.LngLat(value.lng,value.lat),
+              radius: radius, //半径
+              strokeColor: "#FF33FF",
+              strokeWeight: 1,
+              strokeOpacity: 0.2,
+              fillOpacity: 0.4,
+              fillColor: '#1791fc',
+              zIndex: 50,
+              draggable: true
+          })
+        	circle.setMap(map)
+        });
+        // 缩放地图到合适的视野级别
+        map.setFitView(map.getAllOverlays(),1.5);
+        //map.setShowWithCenterAndRange(center, radius);
+    }
+    if (window.attachEvent) {
+      window.attachEvent("onload", initMap);//IE
+    } else {
+        window.addEventListener("load", initMap, false);//FF
+    }
+
+</script>
+</body>
+</html>
