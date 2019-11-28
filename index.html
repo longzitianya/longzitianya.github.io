@@ -46,7 +46,7 @@
 
 	<body >
 		 <div style="position: absolute;left:10px;bottom:10px;z-index:10;">
-                <button  title='定位' onclick="getGeoL"  class="geoLocation"  ></button>
+                <button  title='定位' onclick="getGeoL()"  class="geoLocation"  ></button>
             </div>
 		<div id="mapContainer" style="position: relative;"></div>
 
@@ -62,6 +62,7 @@
 			function getGeoL(){
 			      // let self=this;
 				map.clearMap();
+				console.log("jinlaile");
 				//self.map.destroy();
 				//self.map.createMap(lng,lat);
 				if(dingweiMarker===null){
