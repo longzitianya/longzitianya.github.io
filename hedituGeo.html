@@ -59,22 +59,28 @@
 	</body>
 	<script type="text/javascript" >
 			eruda.init();
-			var map =   new CMMap.Map("mapContainer", {resizeEnable: true, center: new CMMap.LngLat(116.397428, 39.90923),zoom:15});
-			var marker = new CMMap.Marker({
-				position: new CMMap.LngLat(116.397428, 39.90923)
+			var map =   new CMMap.Map("mapContainer", {
+				resizeEnable: true,
+				center:[116.397428, 39.90923],
+				zoom:15
 			});
-			var marker2 = new CMMap.Marker({
-				 icon: "//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
-				 position: [116.397428, 39.90923],
+			var marker = new CMMap.Marker({
+				 icon: "//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png",
+				 position: new CMMap.LngLat(116.397428,39.90923),
 				 offset: new AMap.Pixel(-13, -30)	
 			});
 			marker.setMap(map);
+			var marker2 = new AMap.Marker({
+				 icon: "//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png",
+				 position: new AMap.LngLat(116.397428,39.90923),
+				 offset: new AMap.Pixel(-13, -30)	
+			});
+			
 			var mapObj = new AMap.Map('iCenter', {
 					resizeEnable: true,
 				  	center: [116.397428, 39.90923],
-					//center: new AMap.LngLat(116.397428, 39.90923),
 					zoom:15
-				    });
+			});
 			marker2.setMap(mapObj);
 		       var  dingweiMarker=null;
 			function getGeoL(){
