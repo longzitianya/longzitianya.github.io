@@ -14,12 +14,11 @@
 				height: 100%;
 			}
 			
-			#mapContainer {
+			#mapContainer ,#iCenter{
 				left: 0px;
 				top: 0px;
 				width: 100%;
-				height: 100%;
-				float: left;
+				height: 50%;
 			}
 			 .geoLocation{
 				background-size: 32px 32px!important;
@@ -49,7 +48,7 @@
                 <button  title='定位' onclick="getGeoL()"  class="geoLocation"  ></button>
             </div>
 		<div id="mapContainer" style="position: relative;"></div>
-		<div id="iCenter" style="position: relative;display:none;"></div>
+		<div id="iCenter" style="position: relative;"></div>
 
 	</body>
 	<script type="text/javascript" >
@@ -89,19 +88,18 @@
 					//document.getElementById('status').innerHTML='定位成功'
 					var str = [];
 					str.push('定位结果：' + data.position);
-					lng=data.position.split(",")[0];
-					lat=lng=data.position.split(",")[1];
+					
 					//if(dingweiMarker===null){
 					  dingweiMarker= new CMMap.Marker({
 						offset: new CMMap.Pixel(0,0),
-						position: new CMMap.LngLat(lng,lat)
+						position:data.position
 					  });
 
 					 
 					  //
 					//}
 					dingweiMarker.setMap(map);
-					map.setZoomAndCenter(14, new CMMap.LngLat(lng,lat));
+					map.setZoomAndCenter(14,data.position);
 					
 					str.push('定位类别：' + data.location_type);
 					if(data.accuracy){
