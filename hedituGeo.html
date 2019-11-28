@@ -63,6 +63,11 @@
 			var marker = new CMMap.Marker({
 				position: new CMMap.LngLat(116.397428, 39.90923)
 			});
+			var marker2 = new CMMap.Marker({
+				 icon: "//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
+				 position: [116.397428, 39.90923],
+				 offset: new AMap.Pixel(-13, -30)	
+			});
 			marker.setMap(map);
 			var mapObj = new AMap.Map('iCenter', {
 					resizeEnable: true,
@@ -70,11 +75,12 @@
 					//center: new AMap.LngLat(116.397428, 39.90923),
 					zoom:15
 				    });
-			marker.setMap(mapObj);
+			marker2.setMap(mapObj);
 		       var  dingweiMarker=null;
 			function getGeoL(){
 		       
 				map.clearMap();
+				mapObj.clearMap();
 				console.log("geo--------heditu--------gaode");
 				
 				 mapObj.plugin('AMap.Geolocation', function() {
@@ -104,7 +110,8 @@
 					
 					//if(dingweiMarker===null){
 					  dingweiMarker= new CMMap.Marker({
-						offset: new CMMap.Pixel(0,0),
+						icon: "//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
+				 		offset: new AMap.Pixel(-13, -30),	
 						position:data.position
 					  });
 
