@@ -82,7 +82,7 @@
 					zoom:15
 			});
 			marker2.setMap(mapObj);
-		       var  dingweiMarker=null;
+		       var  dingweiMarker=null,dingweiMarker2=null;
 			function getGeoL(){
 		       
 				map.clearMap();
@@ -99,6 +99,7 @@
 
 					});
 					mapObj.addControl(geolocation);
+					map.addControl(geolocation);
 					geolocation.getCurrentPosition(function(status,result){
 						if(status=='complete'){
 							onComplete(result)
@@ -111,31 +112,21 @@
 				var lng,lat;
 				function onComplete(data) {
 					//document.getElementById('status').innerHTML='定位成功'
-					var str = [];
-					str.push('定位结果：' + data.position);
-					
-					//if(dingweiMarker===null){
 					  dingweiMarker= new CMMap.Marker({
+						icon: "//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
+				 		offset: new CMMap.Pixel(-13, -30),	
+						position:data.position
+					  });
+					dingweiMarker2= new CMMap.Marker({
 						icon: "//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
 				 		offset: new AMap.Pixel(-13, -30),	
 						position:data.position
 					  });
-
-					 
-					  //
-					//}
-					dingweiMarker.setMap(mapObj);
+					dingweiMarker2.setMap(mapObj);
 					mapObj.setZoomAndCenter(15,data.position);
 					dingweiMarker.setMap(map);
 					map.setZoomAndCenter(15,data.position);
-					
-					str.push('定位类别：' + data.location_type);
-					if(data.accuracy){
-						 str.push('精度：' + data.accuracy + ' 米');
-					}//如为IP精确定位结果则没有精度信息
-					//alert(data.isConverted)
-					str.push('是否经过偏移：' + (data.isConverted ? '是' : '否'));
-					//document.getElementById('result').innerHTML = str.join('<br>');
+
 				}
 				//解析定位错误信息
 				function onError(data) {
