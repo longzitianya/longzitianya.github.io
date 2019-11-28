@@ -59,13 +59,15 @@
 	</body>
 	<script type="text/javascript" >
 			eruda.init();
-			var map =   new CMMap.Map("mapContainer", {resizeEnable: true,center: new CMMap.LngLat(116.397428, 39.90923),zoom:15});
+			var map =   new CMMap.Map("mapContainer", {resizeEnable: true, center: new CMMap.LngLat(116.397428, 39.90923),zoom:15});
 			var marker = new CMMap.Marker({
 				position: new CMMap.LngLat(116.397428, 39.90923)
 			});
 			marker.setMap(map);
 			var mapObj = new AMap.Map('iCenter', {
-					resizeEnable: true,center: new AMap.LngLat(116.397428, 39.90923),zoom:15}
+					resizeEnable: true,
+					center: new AMap.LngLat(116.397428, 39.90923),
+					zoom:15
 				    });
 			marker.setMap(mapObj);
 		       var  dingweiMarker=null;
