@@ -4,7 +4,7 @@
 	<head lang="en">
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,minimal-ui">
-		<title>点的掉落动画</title>
+		<title>和地图与高德</title>
 
 		<style type="text/css">
 			body {
@@ -64,14 +64,16 @@
 				position: new CMMap.LngLat(116.397428, 39.90923)
 			});
 			marker.setMap(map);
+			var mapObj = new AMap.Map('iCenter', {
+					resizeEnable: true
+				    });
+			marker.setMap(mapObj);
 		       var  dingweiMarker=null;
 			function getGeoL(){
 		       
 				map.clearMap();
 				console.log("geo--------heditu--------gaode");
-				 var mapObj = new AMap.Map('iCenter', {
-					resizeEnable: true
-				    });
+				
 				 mapObj.plugin('AMap.Geolocation', function() {
 					var geolocation = new AMap.Geolocation({
 						enableHighAccuracy: true,//是否使用高精度定位，默认:true
@@ -113,7 +115,7 @@
 					if(data.accuracy){
 						 str.push('精度：' + data.accuracy + ' 米');
 					}//如为IP精确定位结果则没有精度信息
-					alert(data.isConverted)
+					//alert(data.isConverted)
 					str.push('是否经过偏移：' + (data.isConverted ? '是' : '否'));
 					//document.getElementById('result').innerHTML = str.join('<br>');
 				}
