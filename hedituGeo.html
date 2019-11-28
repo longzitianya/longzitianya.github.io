@@ -124,8 +124,10 @@
 					 
 					  //
 					//}
+					dingweiMarker.setMap(mapObj);
+					mapObj.setZoomAndCenter(15,data.position);
 					dingweiMarker.setMap(map);
-					map.setZoomAndCenter(14,data.position);
+					map.setZoomAndCenter(15,data.position);
 					
 					str.push('定位类别：' + data.location_type);
 					if(data.accuracy){
