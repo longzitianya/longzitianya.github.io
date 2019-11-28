@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+	<head lang="en">
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,minimal-ui">
+		<title>点的掉落动画</title>
+
+		<style type="text/css">
+			body {
+				position: absolute;
+				margin: 0;
+				width: 100%;
+				height: 100%;
+			}
+			
+			#mapContainer {
+				left: 0px;
+				top: 0px;
+				width: 100%;
+				height: 100%;
+				float: left;
+			}
+			 .geoLocation{
+				background-size: 32px 32px!important;
+				background-image: url("icon_move_my_location.png")  !important ;
+				background-repeat: no-repeat;
+				width: 32px;
+				height:32px;
+				border: none;
+				border-radius: 15px;
+				background: #fff;
+				position: absolute;
+				bottom:250px;
+				left:10px;
+			    }
+			    .geoLocation:active,.geoLocation:focus{
+				border: none;
+				outline:none;
+			    }
+		</style>
+		 <script  type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=4af62d0316bc14f5d241333961cddbb9&plugin=AMap.Geolocation" ></script>
+		 <script type="text/javascript" src="https://js.mlocso.com:9095/SDKService/jssdk/auth?v=2.0&key=1586sax375sk36n566b0rc5khzs836bh&name=bundle&plugin=CMMap.ToolBar"></script>
+		<script src="//cdn.jsdelivr.net/npm/eruda"></script>
+	</head>
+
+	<body >
+		 <div style="position: absolute;left:10px;bottom:10px;z-index:10;">
+                <button  title='定位' onclick="getGeoL()"  class="geoLocation"  ></button>
+            </div>
+		<div id="mapContainer" style="position: relative;"></div>
+		<div id="iCenter" style="position: relative;display:none;"></div>
+
+	</body>
+	<script type="text/javascript" >
+			eruda.init();
+			var map =   new CMMap.Map("mapContainer", {center: new CMMap.LngLat(116.397428, 39.90923),zoom:13});
+			var marker = new CMMap.Marker({
+				position: new CMMap.LngLat(116.397428, 39.90923)
+			});
+			marker.setMap(map);
+		       var  dingweiMarker=null;
+			function getGeoL(){
+		
+				map.clearMap();
+				console.log("fffffff");
+				 AMap.plugin('AMap.Geolocation', function() {
+					var geolocation = new AMap.Geolocation({
+						enableHighAccuracy: true,//是否使用高精度定位，默认:true
+						timeout: 10000,          //超过10秒后停止定位，默认：5s
+						//buttonPosition:'RB',    //定位按钮的停靠位置
+						//buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+						//zoomToAccuracy: true,   //定位成功后是否自动调整地图视野到定位点
+
+					});
+					//map.addControl(geolocation);
+					geolocation.getCurrentPosition(function(status,result){
+						if(status=='complete'){
+							onComplete(result)
+						}else{
+							onError(result)
+						}
+					});
+				});
+				//解析定位结果
+				var  lng,lat;
+				function onComplete(data) {
+					//document.getElementById('status').innerHTML='定位成功'
+					var str = [];
+					str.push('定位结果：' + data.position);
+					//if(dingweiMarker===null){
+					  dingweiMarker= new CMMap.Marker({
+						offset: new CMMap.Pixel(0,0),
+						position: new CMMap.LngLat(data.position)
+					  });
+
+					 
+					  //self.map.setZoomAndCenter(14, new CMMap.LngLat(lng,lat));
+					//}
+					dingweiMarker.setMap(map);
+					map.panTo(new CMMap.LngLat(data.position));
+					
+					
+					str.push('定位类别：' + data.location_type);
+					if(data.accuracy){
+						 str.push('精度：' + data.accuracy + ' 米');
+					}//如为IP精确定位结果则没有精度信息
+					str.push('是否经过偏移：' + (data.isConverted ? '是' : '否'));
+					//document.getElementById('result').innerHTML = str.join('<br>');
+				}
+				//解析定位错误信息
+				function onError(data) {
+					//document.getElementById('status').innerHTML='定位失败'
+					//document.getElementById('result').innerHTML = '失败原因排查信息:'+data.message;
+					alert(data.message)
+				}
+				
+				//self.map.add(self.dingweiMarker);
+			 }
+		</script>
+</html>
