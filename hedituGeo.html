@@ -126,7 +126,7 @@
             });
 
        // ios环境切换到使用远程https定位
-            if (AMap.UA.ios && document.location.protocol !== 'https:') {
+            if (AMap.UA.ios) {
 
                 //使用远程定位，见 remogeo.js
                 var remoGeo = new RemoGeoLocation();
