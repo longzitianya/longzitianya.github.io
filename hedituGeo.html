@@ -102,7 +102,7 @@
   });
   marker2.setMap(mapObj);
   circleMarker2.setMap(mapObj);
-  var  dingweiMarker=null,dingweiMarker2=null;
+  var  dingweiMarker=null,dingweiMarker2=null,circleMarker3=null,circleMarker4=null;
   function getGeoL(){
 
     map.clearMap();
@@ -129,7 +129,6 @@
       });
     });
     //解析定位结果
-    var lng,lat;
     function onComplete(data) {
       //document.getElementById('status').innerHTML='定位成功'
       dingweiMarker= new CMMap.Marker({
@@ -137,7 +136,7 @@
         offset: new CMMap.Pixel(-13, -30),
         position:data.position
       });
-      var  circleMarker3 = new CMMap.Circle({
+      circleMarker3 = new CMMap.Circle({
         center:new CMMap.LngLat(data.position.lng,data.position.lat), // 圆心位置
         radius: 500,  //半径
         strokeColor: "#F33",  //线颜色
@@ -149,14 +148,17 @@
       dingweiMarker.setMap(map);
       circleMarker3.setMap(map);
       map.setZoomAndCenter(15,data.position);
+        
       console.log(data.position)
+        
       dingweiMarker2= new AMap.Marker({
         icon: "//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
         offset: new AMap.Pixel(-13, -30),
         position:new AMap.LngLat(data.position.lng,data.position.lat)
       });
-      var  circleMarker4 = new CMMap.Circle({
-        center: new AMap.LngLat(data.position.lng,data.position.lat), // 圆心位置
+        
+      circleMarker4 = new CMMap.Circle({
+        center:[data.position.lng,data.position.lat], // 圆心位置
         radius: 500,  //半径
         strokeColor: "#F33",  //线颜色
         strokeOpacity: 1,  //线透明度
