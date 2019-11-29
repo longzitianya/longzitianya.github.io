@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,minimal-ui">
     <title>和地图与高德</title>
-
+    <link rel="stylesheet" href="//cache.amap.com/lbs/static/main1119.css" />
     <style type="text/css">
         body {
             position: absolute;
@@ -45,6 +45,7 @@
         }
     </style>
     <script  type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=4af62d0316bc14f5d241333961cddbb9&plugin=AMap.Geolocation" ></script>
+    <script type="text/javascript" src="//cache.amap.com/lbs/static/addToolbar.js"></script>
     <script type="text/javascript" src="https://js.mlocso.com:9095/SDKService/jssdk/auth?v=2.0&key=1586sax375sk36n566b0rc5khzs836bh&name=bundle&plugin=CMMap.ToolBar"></script>
     <script src="//cdn.jsdelivr.net/npm/eruda"></script>
 </head>
@@ -111,22 +112,48 @@
 
     mapObj.plugin('AMap.Geolocation', function() {
       var geolocation = new AMap.Geolocation({
-        enableHighAccuracy: true,//是否使用高精度定位，默认:true
-        timeout: 10000,          //超过10秒后停止定位，默认：5s
-        buttonPosition:'RB',    //定位按钮的停靠位置
-        buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
-        zoomToAccuracy: true,   //定位成功后是否自动调整地图视野到定位点
+                enableHighAccuracy: true, //是否使用高精度定位，默认:true
+                timeout: 10000, //超过10秒后停止定位，默认：无穷大
+                maximumAge: 0, //定位结果缓存0毫秒，默认：0
+                convert: true, //自动偏移坐标，偏移后的坐标为高德坐标，默认：true
+                showButton: true, //显示定位按钮，默认：true
+                buttonPosition: 'LB', //定位按钮停靠位置，默认：'LB'，左下角
+                buttonOffset: new AMap.Pixel(10, 20), //定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+                showMarker: true, //定位成功后在定位到的位置显示点标记，默认：true
+                showCircle: true, //定位成功后用圆圈表示定位精度范围，默认：true
+                panToLocation: true, //定位成功后将定位到的位置作为地图中心点，默认：true
+                zoomToAccuracy: true //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+            });
 
-      });
-      //mapObj.addControl(geolocation);
+       // ios环境切换到使用远程https定位
+            if (AMap.UA.ios && document.location.protocol !== 'https:') {
+
+                //使用远程定位，见 remogeo.js
+                var remoGeo = new RemoGeoLocation();
+
+                //替换方法
+                navigator.geolocation.getCurrentPosition = function() {
+                    return remoGeo.getCurrentPosition.apply(remoGeo, arguments);
+                };
+
+                //替换方法
+                navigator.geolocation.watchPosition = function() {
+                    return remoGeo.watchPosition.apply(remoGeo, arguments);
+                };
+            }
+
+        mapObj.addControl(geolocation);
       //map.addControl(geolocation);
-      geolocation.getCurrentPosition(function(status,result){
+         geolocation.getCurrentPosition();
+        AMap.event.addListener(geolocation, 'complete', onComplete); //返回定位信息
+        AMap.event.addListener(geolocation, 'error', onError); //返回定位出错信息
+      <!--geolocation.getCurrentPosition(function(status,result){
         if(status=='complete'){
           onComplete(result)
         }else{
           onError(result)
         }
-      });
+      });-->
     });
     //解析定位结果
     function onComplete(data) {
