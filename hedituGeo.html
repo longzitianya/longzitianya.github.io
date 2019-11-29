@@ -157,7 +157,7 @@
         position:new AMap.LngLat(data.position.lng,data.position.lat)
       });
         
-      circleMarker4 = new CMMap.Circle({
+      circleMarker4 = new AMap.Circle({
         center:[data.position.lng,data.position.lat], // 圆心位置
         radius: 500,  //半径
         strokeColor: "#F33",  //线颜色
@@ -167,7 +167,8 @@
         fillOpacity: 0.35 //填充透明度
       });
       dingweiMarker2.setMap(mapObj);
-      //circleMarker4.setMap(mapObj);
+      circleMarker4.setMap(mapObj);
+     // mapObj.add(circleMarker4)
       mapObj.setZoomAndCenter(15,[data.position.lng,data.position.lat]);
     }
     //解析定位错误信息
