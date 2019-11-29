@@ -156,7 +156,7 @@
 						position:new AMap.LngLat(data.position.lng,data.position.lat),
 					  });
 					var  circleMarker4 = new CMMap.Circle({
-						center: new AMap.LngLat(data.position.lng,data.position.lat), // 圆心位置
+						center: [data.position.lng,data.position.lat], // 圆心位置
 						radius: 500,  //半径
 						  strokeColor: "#F33",  //线颜色
 						    strokeOpacity: 1,  //线透明度
