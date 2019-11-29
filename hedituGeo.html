@@ -1,183 +1,181 @@
 <!DOCTYPE html>
 <html>
 
-	<head lang="en">
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,minimal-ui">
-		<title>和地图与高德</title>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,minimal-ui">
+    <title>和地图与高德</title>
 
-		<style type="text/css">
-			body {
-				position: absolute;
-				margin: 0;
-				width: 100%;
-				height: 100%;
-			}
-			
-			#mapContainer{
-				left: 0px;
-				top: 0px;
-				width: 100%;
-				height: 50%;
-			}
-			#iCenter{
-				left: 0px;
-				bottom: 0px;
-				width: 100%;
-				height: 50%;
-			}
-			 .geoLocation{
-				background-size: 32px 32px!important;
-				background-image: url("icon_move_my_location.png")  !important ;
-				background-repeat: no-repeat;
-				width: 32px;
-				height:32px;
-				border: none;
-				border-radius: 15px;
-				background: #fff;
-				position: absolute;
-				bottom:250px;
-				left:10px;
-			    }
-			    .geoLocation:active,.geoLocation:focus{
-				border: none;
-				outline:none;
-			    }
-		</style>
-		 <script  type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=4af62d0316bc14f5d241333961cddbb9&plugin=AMap.Geolocation" ></script>
-		 <script type="text/javascript" src="https://js.mlocso.com:9095/SDKService/jssdk/auth?v=2.0&key=1586sax375sk36n566b0rc5khzs836bh&name=bundle&plugin=CMMap.ToolBar"></script>
-		<script src="//cdn.jsdelivr.net/npm/eruda"></script>
-	</head>
+    <style type="text/css">
+        body {
+            position: absolute;
+            margin: 0;
+            width: 100%;
+            height: 100%;
+        }
 
-	<body >
-		 <div style="position: absolute;left:10px;bottom:10px;z-index:10;">
-                <button  title='定位' onclick="getGeoL()"  class="geoLocation"  ></button>
-            </div>
-		<div id="mapContainer" style="position: relative;"></div>
-		<div id="iCenter" style="position: relative;"></div>
+        #mapContainer{
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 50%;
+        }
+        #iCenter{
+            left: 0px;
+            bottom: 0px;
+            width: 100%;
+            height: 50%;
+        }
+        .geoLocation{
+            background-size: 32px 32px!important;
+            background-image: url("icon_move_my_location.png")  !important ;
+            background-repeat: no-repeat;
+            width: 32px;
+            height:32px;
+            border: none;
+            border-radius: 15px;
+            background: #fff;
+            position: absolute;
+            bottom:250px;
+            left:10px;
+        }
+        .geoLocation:active,.geoLocation:focus{
+            border: none;
+            outline:none;
+        }
+    </style>
+    <script  type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=4af62d0316bc14f5d241333961cddbb9&plugin=AMap.Geolocation" ></script>
+    <script type="text/javascript" src="https://js.mlocso.com:9095/SDKService/jssdk/auth?v=2.0&key=1586sax375sk36n566b0rc5khzs836bh&name=bundle&plugin=CMMap.ToolBar"></script>
+    <script src="//cdn.jsdelivr.net/npm/eruda"></script>
+</head>
 
-	</body>
-	<script type="text/javascript" >
-			eruda.init();
-			var map =   new CMMap.Map("mapContainer", {
-				resizeEnable: true,
-				center:[116.397428, 39.90923],
-				zoom:15
-			});
-			var marker = new CMMap.Marker({
-				 icon: "//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png",
-				 position: new CMMap.LngLat(116.397428,39.90923),
-				 offset: new CMMap.Pixel(-13, -30)	
-			});
-			var  circleMarker = new CMMap.Circle({
-			center: new CMMap.LngLat(116.397428,39.90923), // 圆心位置
-			radius: 500,  //半径
-			  strokeColor: "#FF33FF",
-			    strokeWeight: 1,
-			    strokeOpacity: 0.2,
-			    fillOpacity: 0.4,
-			    fillColor: '#1791fc'
+<body >
+<div style="position: absolute;left:10px;bottom:10px;z-index:10;">
+    <button  title='定位' onclick="getGeoL()"  class="geoLocation"  ></button>
+</div>
+<div id="mapContainer" style="position: relative;"></div>
+<div id="iCenter" style="position: relative;"></div>
 
-		      });
-			marker.setMap(map);
-			circleMarker.setMap(map);
-			var marker2 = new AMap.Marker({
-				 icon: "//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png",
-				 position: new AMap.LngLat(116.397428,39.90923),
-				 offset: new AMap.Pixel(-13, -30)	
-			});
-			var  circleMarker2 = new AMap.Circle({
-			center: [116.397428,39.90923], // 圆心位置
-			radius: 500,  //半径
-			 strokeColor: "#FF33FF",
-			    strokeWeight: 1,
-			    strokeOpacity: 0.2,
-			    fillOpacity: 0.4,
-			    fillColor: '#1791fc'
-		      });
-			var mapObj = new AMap.Map('iCenter', {
-					resizeEnable: true,
-				  	center: [116.397428, 39.90923],
-					zoom:15
-			});
-			marker2.setMap(mapObj);
-			circleMarker2.setMap(mapObj);
-		       var  dingweiMarker=null,dingweiMarker2=null;
-			function getGeoL(){
-		       
-				map.clearMap();
-				mapObj.clearMap();
-				console.log("3333--------geo--------heditu--------gaode");
-				
-				 mapObj.plugin('AMap.Geolocation', function() {
-					var geolocation = new AMap.Geolocation({
-						enableHighAccuracy: true,//是否使用高精度定位，默认:true
-						timeout: 10000,          //超过10秒后停止定位，默认：5s
-						buttonPosition:'RB',    //定位按钮的停靠位置
-						buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
-						zoomToAccuracy: true,   //定位成功后是否自动调整地图视野到定位点
+</body>
+<script type="text/javascript" >
+  eruda.init();
+  var map =   new CMMap.Map("mapContainer", {
+    resizeEnable: true,
+    center:[116.397428, 39.90923],
+    zoom:15
+  });
+  var marker = new CMMap.Marker({
+    icon: "//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png",
+    position: new CMMap.LngLat(116.397428,39.90923),
+    offset: new CMMap.Pixel(-13, -30)
+  });
+  var  circleMarker = new CMMap.Circle({
+    center: new CMMap.LngLat(116.397428,39.90923), // 圆心位置
+    radius: 500,  //半径
+    strokeColor: "#FF33FF",
+    strokeWeight: 1,
+    strokeOpacity: 0.2,
+    fillOpacity: 0.4,
+    fillColor: '#1791fc'
 
-					});
-					//mapObj.addControl(geolocation);
-					//map.addControl(geolocation);
-					geolocation.getCurrentPosition(function(status,result){
-						if(status=='complete'){
-							onComplete(result)
-						}else{
-							onError(result)
-						}
-					});
-				});
-				//解析定位结果
-				var lng,lat;
-				function onComplete(data) {
-					//document.getElementById('status').innerHTML='定位成功'
-					  dingweiMarker= new CMMap.Marker({
-						icon: "//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
-				 		offset: new CMMap.Pixel(-13, -30),	
-						position:data.position
-					  });
-					var  circleMarker3 = new CMMap.Circle({
-						center:new CMMap.LngLat(data.position.lng,data.position.lat), // 圆心位置
-						radius: 500,  //半径
-						  strokeColor: "#F33",  //线颜色
-						    strokeOpacity: 1,  //线透明度
-						    strokeWeight: 3,  //线粗细度
-						    fillColor: "#ee2200",  //填充颜色
-						    fillOpacity: 0.35 //填充透明度
-					      });
-					dingweiMarker.setMap(map);
-					circleMarker3.setMap(map);
-					map.setZoomAndCenter(15,data.position);
-					console.log(data.position)
-					dingweiMarker2= new AMap.Marker({
-						icon: "//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
-				 		offset: new AMap.Pixel(-13, -30),	
-						position:new AMap.LngLat(data.position.lng,data.position.lat),
-					  });
-					var  circleMarker4 = new CMMap.Circle({
-						center: [data.position.lng,data.position.lat], // 圆心位置
-						radius: 500,  //半径
-						  strokeColor: "#F33",  //线颜色
-						    strokeOpacity: 1,  //线透明度
-						    strokeWeight: 3,  //线粗细度
-						    fillColor: "#ee2200",  //填充颜色
-						    fillOpacity: 0.35 //填充透明度
-					      });
-					dingweiMarker2.setMap(mapObj);
-					circleMarker4.setMap(mapObj);
-					mapObj.setZoomAndCenter(15,[data.position.lng,data.position.lat]);
-					
+  });
+  marker.setMap(map);
+  circleMarker.setMap(map);
+  var marker2 = new AMap.Marker({
+    icon: "//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png",
+    position: new AMap.LngLat(116.397428,39.90923),
+    offset: new AMap.Pixel(-13, -30)
+  });
+  var  circleMarker2 = new AMap.Circle({
+    center: [116.397428,39.90923], // 圆心位置
+    radius: 500,  //半径
+    strokeColor: "#FF33FF",
+    strokeWeight: 1,
+    strokeOpacity: 0.2,
+    fillOpacity: 0.4,
+    fillColor: '#1791fc'
+  });
+  var mapObj = new AMap.Map('iCenter', {
+    resizeEnable: true,
+    center: [116.397428, 39.90923],
+    zoom:15
+  });
+  marker2.setMap(mapObj);
+  circleMarker2.setMap(mapObj);
+  var  dingweiMarker=null,dingweiMarker2=null;
+  function getGeoL(){
 
-				}
-				//解析定位错误信息
-				function onError(data) {
-					//document.getElementById('status').innerHTML='定位失败'
-					//document.getElementById('result').innerHTML = '失败原因排查信息:'+data.message;
-					alert(data.message)
-				}
-				
-				//self.map.add(self.dingweiMarker);
-			 }
-		</script>
+    map.clearMap();
+    mapObj.clearMap();
+    console.log("3333--------geo--------heditu--------gaode");
+
+    mapObj.plugin('AMap.Geolocation', function() {
+      var geolocation = new AMap.Geolocation({
+        enableHighAccuracy: true,//是否使用高精度定位，默认:true
+        timeout: 10000,          //超过10秒后停止定位，默认：5s
+        buttonPosition:'RB',    //定位按钮的停靠位置
+        buttonOffset: new AMap.Pixel(10, 20),//定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+        zoomToAccuracy: true,   //定位成功后是否自动调整地图视野到定位点
+
+      });
+      //mapObj.addControl(geolocation);
+      //map.addControl(geolocation);
+      geolocation.getCurrentPosition(function(status,result){
+        if(status=='complete'){
+          onComplete(result)
+        }else{
+          onError(result)
+        }
+      });
+    });
+    //解析定位结果
+    var lng,lat;
+    function onComplete(data) {
+      //document.getElementById('status').innerHTML='定位成功'
+      dingweiMarker= new CMMap.Marker({
+        icon: "//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
+        offset: new CMMap.Pixel(-13, -30),
+        position:data.position
+      });
+      var  circleMarker3 = new CMMap.Circle({
+        center:new CMMap.LngLat(data.position.lng,data.position.lat), // 圆心位置
+        radius: 500,  //半径
+        strokeColor: "#F33",  //线颜色
+        strokeOpacity: 1,  //线透明度
+        strokeWeight: 3,  //线粗细度
+        fillColor: "#ee2200",  //填充颜色
+        fillOpacity: 0.35 //填充透明度
+      });
+      dingweiMarker.setMap(map);
+      circleMarker3.setMap(map);
+      map.setZoomAndCenter(15,data.position);
+      console.log(data.position)
+      dingweiMarker2= new AMap.Marker({
+        icon: "//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
+        offset: new AMap.Pixel(-13, -30),
+        position:new AMap.LngLat(data.position.lng,data.position.lat)
+      });
+      var  circleMarker4 = new CMMap.Circle({
+        center: new AMap.LngLat(data.position.lng,data.position.lat), // 圆心位置
+        radius: 500,  //半径
+        strokeColor: "#F33",  //线颜色
+        strokeOpacity: 1,  //线透明度
+        strokeWeight: 3,  //线粗细度
+        fillColor: "#ee2200",  //填充颜色
+        fillOpacity: 0.35 //填充透明度
+      });
+      dingweiMarker2.setMap(mapObj);
+      circleMarker4.setMap(mapObj);
+      mapObj.setZoomAndCenter(15,[data.position.lng,data.position.lat]);
+    }
+    //解析定位错误信息
+    function onError(data) {
+      //document.getElementById('status').innerHTML='定位失败'
+      //document.getElementById('result').innerHTML = '失败原因排查信息:'+data.message;
+      alert(data.message)
+    }
+
+    //self.map.add(self.dingweiMarker);
+  }
+</script>
 </html>
