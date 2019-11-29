@@ -69,19 +69,38 @@
 				 position: new CMMap.LngLat(116.397428,39.90923),
 				 offset: new AMap.Pixel(-13, -30)	
 			});
+			var  circleMarker = new CMMap.Circle({
+			center: new CMMap.LngLat(116.397428,39.90923), // 圆心位置
+			radius: 500,  //半径
+			strokeColor: "#FF33FF",
+			strokeWeight: 1,
+			strokeOpacity: 0.2,
+			fillOpacity: 0.4,
+			fillColor: '#1791fc'
+		      });
 			marker.setMap(map);
+			circleMarker.setMap(map);
 			var marker2 = new AMap.Marker({
 				 icon: "//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png",
 				 position: new AMap.LngLat(116.397428,39.90923),
 				 offset: new AMap.Pixel(-13, -30)	
 			});
-			
+			var  circleMarker2 = new AMap.Circle({
+			center: new AMap.LngLat(116.397428,39.90923), // 圆心位置
+			radius: 500,  //半径
+			strokeColor: "#FF33FF",
+			strokeWeight: 1,
+			strokeOpacity: 0.2,
+			fillOpacity: 0.4,
+			fillColor: '#1791fc'
+		      });
 			var mapObj = new AMap.Map('iCenter', {
 					resizeEnable: true,
 				  	center: [116.397428, 39.90923],
 					zoom:15
 			});
 			marker2.setMap(mapObj);
+			circleMarker2.setMap(map);
 		       var  dingweiMarker=null,dingweiMarker2=null;
 			function getGeoL(){
 		       
@@ -117,7 +136,17 @@
 				 		offset: new CMMap.Pixel(-13, -30),	
 						position:data.position
 					  });
+					var  circleMarker3 = new CMMap.Circle({
+						center:data.position, // 圆心位置
+						radius: 500,  //半径
+						strokeColor: "#FF33FF",
+						strokeWeight: 1,
+						strokeOpacity: 0.2,
+						fillOpacity: 0.4,
+						fillColor: '#1791fc'
+					      });
 					dingweiMarker.setMap(map);
+					circleMarker3.setMap(map);
 					map.setZoomAndCenter(15,data.position);
 					console.log(data.position)
 					dingweiMarker2= new AMap.Marker({
@@ -125,7 +154,17 @@
 				 		offset: new AMap.Pixel(-13, -30),	
 						position:new AMap.LngLat(data.position.lng,data.position.lat),
 					  });
+					var  circleMarker4 = new CMMap.Circle({
+						center: new AMap.LngLat(data.position.lng,data.position.lat), // 圆心位置
+						radius: 500,  //半径
+						strokeColor: "#FF33FF",
+						strokeWeight: 1,
+						strokeOpacity: 0.2,
+						fillOpacity: 0.4,
+						fillColor: '#1791fc'
+					      });
 					dingweiMarker2.setMap(mapObj);
+					circleMarker4.setMap(mapObj);
 					mapObj.setZoomAndCenter(15,[data.position.lng,data.position.lat]);
 					
 
