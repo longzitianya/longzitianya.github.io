@@ -45,7 +45,6 @@
         }
     </style>
     <script  type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=4af62d0316bc14f5d241333961cddbb9&plugin=AMap.Geolocation" ></script>
-    <script type="text/javascript" src="//cache.amap.com/lbs/static/addToolbar.js"></script>
     <script type="text/javascript" src="https://js.mlocso.com:9095/SDKService/jssdk/auth?v=2.0&key=1586sax375sk36n566b0rc5khzs836bh&name=bundle&plugin=CMMap.ToolBar"></script>
     <script src="//cdn.jsdelivr.net/npm/eruda"></script>
 </head>
@@ -148,13 +147,7 @@
          geolocation.getCurrentPosition();
         AMap.event.addListener(geolocation, 'complete', onComplete); //返回定位信息
         AMap.event.addListener(geolocation, 'error', onError); //返回定位出错信息
-      <!--geolocation.getCurrentPosition(function(status,result){
-        if(status=='complete'){
-          onComplete(result)
-        }else{
-          onError(result)
-        }
-      });-->
+     
     });
     //解析定位结果
     function onComplete(data) {
