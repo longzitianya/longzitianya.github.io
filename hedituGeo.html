@@ -72,11 +72,12 @@
 			var  circleMarker = new CMMap.Circle({
 			center: new CMMap.LngLat(116.397428,39.90923), // 圆心位置
 			radius: 500,  //半径
-			strokeColor: "#FF33FF",
-			strokeWeight: 1,
-			strokeOpacity: 0.2,
-			fillOpacity: 0.4,
-			fillColor: '#1791fc'
+			  strokeColor: "#FF33FF",
+			    strokeWeight: 1,
+			    strokeOpacity: 0.2,
+			    fillOpacity: 0.4,
+			    fillColor: '#1791fc'
+
 		      });
 			marker.setMap(map);
 			circleMarker.setMap(map);
@@ -88,11 +89,11 @@
 			var  circleMarker2 = new AMap.Circle({
 			center: new AMap.LngLat("116.397428","39.90923"), // 圆心位置
 			radius: 500,  //半径
-			strokeColor: "#FF33FF",
-			strokeWeight: 1,
-			strokeOpacity: 0.2,
-			fillOpacity: 0.4,
-			fillColor: '#1791fc'
+			 strokeColor: "#FF33FF",
+			    strokeWeight: 1,
+			    strokeOpacity: 0.2,
+			    fillOpacity: 0.4,
+			    fillColor: '#1791fc'
 		      });
 			var mapObj = new AMap.Map('iCenter', {
 					resizeEnable: true,
@@ -139,11 +140,11 @@
 					var  circleMarker3 = new CMMap.Circle({
 						center:new CMMap.LngLat(data.position.lng,data.position.lat), // 圆心位置
 						radius: 500,  //半径
-						strokeColor: "#FF33FF",
-						strokeWeight: 1,
-						strokeOpacity: 0.2,
-						fillOpacity: 0.4,
-						fillColor: '#1791fc'
+						  strokeColor: "#F33",  //线颜色
+						    strokeOpacity: 1,  //线透明度
+						    strokeWeight: 3,  //线粗细度
+						    fillColor: "#ee2200",  //填充颜色
+						    fillOpacity: 0.35 //填充透明度
 					      });
 					dingweiMarker.setMap(map);
 					circleMarker3.setMap(map);
@@ -157,11 +158,11 @@
 					var  circleMarker4 = new CMMap.Circle({
 						center: new AMap.LngLat(data.position.lng,data.position.lat), // 圆心位置
 						radius: 500,  //半径
-						strokeColor: "#FF33FF",
-						strokeWeight: 1,
-						strokeOpacity: 0.2,
-						fillOpacity: 0.4,
-						fillColor: '#1791fc'
+						  strokeColor: "#F33",  //线颜色
+						    strokeOpacity: 1,  //线透明度
+						    strokeWeight: 3,  //线粗细度
+						    fillColor: "#ee2200",  //填充颜色
+						    fillOpacity: 0.35 //填充透明度
 					      });
 					dingweiMarker2.setMap(mapObj);
 					circleMarker4.setMap(mapObj);
