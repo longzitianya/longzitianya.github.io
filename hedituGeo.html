@@ -67,7 +67,7 @@
 			var marker = new CMMap.Marker({
 				 icon: "//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png",
 				 position: new CMMap.LngLat(116.397428,39.90923),
-				 offset: new AMap.Pixel(-13, -30)	
+				 offset: new CMMap.Pixel(-13, -30)	
 			});
 			var  circleMarker = new CMMap.Circle({
 			center: new CMMap.LngLat(116.397428,39.90923), // 圆心位置
@@ -87,7 +87,7 @@
 				 offset: new AMap.Pixel(-13, -30)	
 			});
 			var  circleMarker2 = new AMap.Circle({
-			center: new AMap.LngLat("116.397428","39.90923"), // 圆心位置
+			center: [116.397428,39.90923], // 圆心位置
 			radius: 500,  //半径
 			 strokeColor: "#FF33FF",
 			    strokeWeight: 1,
