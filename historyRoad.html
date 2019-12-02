@@ -130,7 +130,7 @@ function loadLayer(map) {
         // renderOptions: defaultRenderOptions
     });
     window.pointSimplifierIns = layer;
-    map.showFps();
+    //map.showFps();
     var $ = MassivePlineLayer.utils.$;
     // 高德测试数据
     $.getJSON('https://a.amap.com/amap-ui/static/data/big-routes.json', function(dat) {
@@ -184,7 +184,7 @@ function addNavitor(layer, i, icon) {
         height: 15,
         alpha: 0.8,
         animInterval: 10,
-        speed: (i%4==0) ? 1e3 * 2 : 1e3 ,
+        speed: (i%4==0) ? 1e3 * 2 : 1e3 
     });
     // nav.setIcon('https://webapi.amap.com/ui/1.0/ui/misc/PathSimplifier/examples/imgs/car.png');
     layer.addNavigator(nav, true);
