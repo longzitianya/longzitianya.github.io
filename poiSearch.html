@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,minimal-ui">
+    <title>和地图与高德</title>
+    <link rel="stylesheet" href="https://cache.amap.com/lbs/static/main1119.css" />
+    <style type="text/css">
+        body {
+            position: absolute;
+            margin: 0;
+            width: 100%;
+            height: 100%;
+        }
+        #app{
+            position: absolute;
+            left:0;
+            top:0;
+            width: 100%;
+            height:100%;
+            transition: all 0.5s cubic-bezier(0.55,0,0.1,1);
+            overflow: hidden;
+            background: #F0EFF5;
+        }
+        .amap-info, .amap-markers {
+            z-index: 120;
+        }
+
+        .amap-info-content {
+            background: #FFF none repeat scroll 0% 0%;
+            border: 1px solid #CCC;
+            padding: 10px 18px 10px 10px;
+            line-height: 1.4;
+            overflow: auto;
+        }
+
+        .amap-overlays {
+            cursor: default;
+        }
+
+        .amap-info-outer, .amap-menu-outer {
+            box-shadow: 0px 3px 14px rgba(0, 0, 100, 0.6);
+            background: #FFF none repeat scroll 0% 0%;
+            border-radius: 2px;
+            padding: 1px;
+            text-align: left;
+            border: 1px solid #C0C0C0;
+        }
+
+        .amap-info-close {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            color: #C3C3C3;
+            text-decoration: none;
+            font: 700 16px/14px Tahoma,Verdana,sans-serif;
+            width: 14px;
+            height: 14px;
+        }
+
+
+        .amap-info-sharp {
+            height: 23px;
+            margin: 0 auto;
+            overflow: hidden;
+            position: relative;
+            top: -1px;
+            width: 30px;
+        }
+
+        .info-top {
+            position: relative;
+            background: #F9F9F9 none repeat scroll 0px 0px;
+            border-bottom: 1px solid #CCC;
+            border-radius: 5px 5px 0px 0px;
+        }
+        .info-middle {
+            font-size: 12px;
+            padding: 10px;
+            line-height: 21px;
+        }
+        .info-bottom {
+            height: 0px;
+            width: 100%;
+            clear: both;
+            text-align: center;
+        }
+
+        .content-window-card {
+            position: relative;
+            box-shadow: none;
+            bottom: 0;
+            left: 0;
+            width: auto;
+            min-width: 200px;
+            padding: 0;
+        }
+
+        .content-window-card p {
+            height: 2rem;
+        }
+
+        .custom-info {
+            border: solid 1px silver;
+        }
+
+        div.info-top {
+            position: relative;
+            background: none repeat scroll 0 0 #F9F9F9;
+            border-bottom: 1px solid #CCC;
+            border-radius: 5px 5px 0 0;
+        }
+
+        div.info-top div {
+            display: inline-block;
+            color: #333333;
+            font-weight: bold;
+            line-height: 31px;
+            padding: 0 10px;
+        }
+
+        div.info-top img {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            transition-duration: 0.25s;
+        }
+
+        div.info-top img:hover {
+            box-shadow: 0px 0px 5px #000;
+        }
+
+        div.info-middle {
+            font-size: 12px;
+            padding: 10px 6px;
+            line-height: 24px;
+        }
+
+        div.info-bottom {
+            height: 0px;
+            width: 100%;
+            clear: both;
+            text-align: center;
+        }
+
+        div.info-bottom img {
+            position: relative;
+            z-index: 104;
+        }
+
+        .info-middle img {
+            float: left;
+            margin-right: 6px;
+        }
+        .cmmap-luopan {
+            width: 184px;
+            display: none;
+        }
+        .amap-luopan{
+            width: 184px;
+            display: none;
+        }
+        #mapContainer{
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 50%;
+        }
+        #iCenter{
+            left: 0px;
+            bottom: 0px;
+            width: 100%;
+            height: 50%;
+        }
+        .geoLocation{
+            background-size: 32px 32px!important;
+            background-image: url("icon_move_my_location.png")  !important ;
+            background-repeat: no-repeat;
+            width: 32px;
+            height:32px;
+            border: none;
+            border-radius: 15px;
+            background: #fff;
+            position: absolute;
+            bottom:250px;
+            left:10px;
+        }
+        .geoLocation:active,.geoLocation:focus{
+            border: none;
+            outline:none;
+        }
+        #r-result{width:100%;}
+        .selectArea{
+            background: #fff;
+            min-height:60px;
+        }
+        .selectArea2{
+            background: #fff;
+            min-height: 60px;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+        .colorBlue{
+            color:#169BD5;
+        }
+        .panel{
+            padding: 15px;
+        }
+        .panel1{
+            padding: 0 15px;
+        }
+        .input { border: none;min-width: 320px;width:100%;height: 48px;padding-left:8px; padding-right:32px;}
+
+        .clear {
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            top: 10px;
+            right: 0px;
+            background: url(./clear_circle.png) no-repeat;
+            outline: none;
+            z-index: 11;
+        }
+        .clear2 {
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            top: 59%;
+            right: 0px;
+            background: url(./clear_circle.png) no-repeat;
+            outline: none;
+            z-index: 11;
+        }
+        .input::-ms-clear { display: none; }
+        .input:valid + .clear { display: inline; }
+    </style>
+   
+</head>
+
+<body >
+<div id="app">
+    <div id="r-result">
+        <input   autocomplete="off" id="addSuggestId" v-model="keyword"  class="input" placeholder="请输入安全区域地址"/>
+        <a href="javascript:;" class="clear" v-if="keywordFlag" @click="cssClear"></a>
+    </div>
+   <!-- <div style="position: absolute;left:10px;bottom:10px;z-index:10;">
+    <button  title='定位' @click="getGeoL"  class="geoLocation"  ></button>
+    </div>-->
+    <div id="mapContainer" style="position: relative;"></div>
+    <div id="r-result2">
+        <input   autocomplete="off" id="addSuggestId2" v-model="keyword2"  class="input" placeholder="请输入安全区域地址"/>
+        <a href="javascript:;" class="clear2" v-if="keywordFlag2" @click="cssClear2"></a>
+    </div>
+    <div id="iCenter" style="position: relative;"></div>
+</div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+<script  type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=4af62d0316bc14f5d241333961cddbb9&plugin=AMap.Geolocation,AMap.Geocoder,AMap.CitySearch,AMap.GraspRoad" ></script>
+<!-- UI组件库 1.0 -->
+<script src="https://webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
+<script type="text/javascript" src="https://js.mlocso.com:9095/SDKService/jssdk/auth?v=2.0&key=1586sax375sk36n566b0rc5khzs836bh&name=bundle&plugin=CMMap.ToolBar"></script>
+<script type="text/javascript" src="./remogeo.js"></script>
+<script src="http://cdn.jsdelivr.net/npm/eruda"></script>
+<script type="text/javascript" >
+
+  var app= new Vue({
+    el:"#app",
+    data:{
+      keyword:"",
+      keywordFlag:false,
+      keyword2:"",
+      keywordFlag2:false,
+      radius:500,
+      circlePath: {
+        center: {
+          lng: 123.46231,
+          lat: 41.719623
+        }
+      },
+      circleMarker:null,
+      carMarker:null,
+      circleMarker2:null,
+      carMarker2:null,
+      map:null,
+      mapObj:null
+    },
+    watch: {
+      keyword: {
+        handler(newKeyword,oldKeyword) {
+          if(newKeyword===""){
+            this.keywordFlag=false;
+          }else{
+            this.keywordFlag=true;
+          }
+        },
+        immediate: true
+      },
+      keyword2: {
+        handler(newKeyword,oldKeyword) {
+          if(newKeyword===""){
+            this.keywordFlag2=false;
+          }else{
+            this.keywordFlag2=true;
+          }
+        },
+        immediate: true
+      }
+    },
+    mounted(){
+      this.initMap();
+      this.initMap2();
+    },
+    methods: {
+      initMap(){
+        var  self=this;
+        this.map =   new CMMap.Map("mapContainer", {
+          resizeEnable: true,
+          //center:[116.397428, 39.90923],
+          zoom:15
+        });
+        /*var marker = new CMMap.Marker({
+          icon: "https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png",
+          position: new CMMap.LngLat(116.397428,39.90923),
+          offset: new CMMap.Pixel(-13, -30)
+        });
+        var  circleMarker = new CMMap.Circle({
+          center: new CMMap.LngLat(116.397428,39.90923), // 圆心位置
+          radius: 500,  //半径
+          strokeColor: "#FF33FF",
+          strokeWeight: 1,
+          strokeOpacity: 0.2,
+          fillOpacity: 0.4,
+          fillColor: '#1791fc'
+
+        });
+        marker.setMap(this.map);
+        circleMarker.setMap(this.map);
+        */
+
+        //marker2.setMap(this.mapObj);
+       // circleMarker2.setMap(this.mapObj);
+        AMap.plugin('AMap.Geocoder', function() {
+          var geocoder = new AMap.Geocoder({});
+          geocoder.getAddress(/*["123.46231","41.719623"]*/[self.circlePath.center.lng,self.circlePath.center.lat], function(status, result) {
+            if (status === 'complete' && result.info === 'OK') {
+              // result为对应的地理位置详细信息
+              var address = result.regeocode.formattedAddress;
+              self.keyword=address;
+            }
+          })
+        });
+        var ControlBar = new CMMap.ControlBar({
+          position:{bottom:'-25px',right:'10px'}
+        });
+      /*  var ControlBar2 = new AMap.ControlBar({
+          position:{bottom:'-25px',right:'10px'}
+        });*/
+
+        self.map.addControl(ControlBar);
+        //self.mapObj.addControl(ControlBar2);
+        self.map.panTo([self.circlePath.center.lng,self.circlePath.center.lat]);
+        self.map.on("click", function(e) {
+          self.map.clearMap();
+          self.circlePath.center.lng=e.lnglat.lng;
+          self.circlePath.center.lat=e.lnglat.lat;
+          //self.keyword=self.geocoderAddress(self.circlePath.center.lng,self.circlePath.center.lat);
+          AMap.plugin('AMap.Geocoder', function() {
+            var geocoder = new AMap.Geocoder({});
+            geocoder.getAddress([self.circlePath.center.lng,self.circlePath.center.lat], function(status, result) {
+              if (status === 'complete' && result.info === 'OK') {
+                // result为对应的地理位置详细信息
+                var address = result.regeocode.formattedAddress;
+                self.keyword=address;
+              }
+            })
+          });
+          self.map.remove([self.circleMarker,self.carMarker]);
+           self.circleMarker=null;
+          self.carMarker=null;
+          self.createCarMaker(self.circlePath.center.lng,self.circlePath.center.lat);
+          self.createCircle(self.circlePath.center.lng,self.circlePath.center.lat);
+          self.map.panTo([self.circlePath.center.lng,self.circlePath.center.lat]);
+        });
+
+        //输入提示
+        /*   var auto = new CMMap.Autocomplete({
+             input: "addSuggestId"
+           });*/
+        //console.log()
+        AMapUI.loadUI(['misc/PoiPicker'], function(PoiPicker) {
+          var poiPicker = new PoiPicker({
+            //city:'北京',
+            input: 'addSuggestId',
+
+          });
+          //初始化poiPicker
+          poiPickerReady(poiPicker);
+        });
+
+        function poiPickerReady(poiPicker) {
+          window.poiPicker = poiPicker;
+          //选取了某个POI
+          poiPicker.on('poiPicked', function(poiResult) {
+            poiPicker.clearSuggest();
+            //poiPicker.clearSearchResults();
+            let   poi = poiResult.item;
+            self.map.clearMap();
+            self.circlePath.center.lng=poi.location.lng;
+            self.circlePath.center.lat=poi.location.lat;
+            //self.keyword=self.geocoderAddress(self.circlePath.center.lng,self.circlePath.center.lat);
+            AMap.plugin('AMap.Geocoder', function() {
+              var geocoder = new AMap.Geocoder({});
+              geocoder.getAddress([self.circlePath.center.lng,self.circlePath.center.lat], function(status, result) {
+                if (status === 'complete' && result.info === 'OK') {
+                  // result为对应的地理位置详细信息
+                  var address = result.regeocode.formattedAddress;
+                  self.keyword=address;
+                }
+              })
+            });
+
+            self.map.remove([self.circleMarker,self.carMarker]);
+            self.circleMarker=null;
+            self.carMarker=null;
+            self.createCarMaker(self.circlePath.center.lng,self.circlePath.center.lat);
+            self.createCircle(self.circlePath.center.lng,self.circlePath.center.lat);
+            //self.map.setFitView(self.map.getAllOverlays(),1.5);
+            //map.setCenter(marker.getPosition());
+            self.map.panTo([self.circlePath.center.lng,self.circlePath.center.lat]);
+            //self.map.setZoomAndCenter(15,{lng:self.circlePath.center.lng,lat:self.circlePath.center.lat})
+          });
+        }
+        self.createCarMaker(self.circlePath.center.lng,self.circlePath.center.lat);
+        self.createCircle(self.circlePath.center.lng,self.circlePath.center.lat);
+      },
+      initMap2(){
+        var  self=this;
+        /*var marker2 = new AMap.Marker({
+          icon: "https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png",
+          position: new AMap.LngLat(116.397428,39.90923),
+          offset: new AMap.Pixel(-13, -30)
+        });
+        var  circleMarker2 = new AMap.Circle({
+          center: [116.397428,39.90923], // 圆心位置
+          radius: 500,  //半径
+          strokeColor: "#FF33FF",
+          strokeWeight: 1,
+          strokeOpacity: 0.2,
+          fillOpacity: 0.4,
+          fillColor: '#1791fc'
+        });*/
+        this.mapObj = new AMap.Map('iCenter', {
+          resizeEnable: true,
+          //center: [116.397428, 39.90923],
+          zoom:15
+        });
+        //marker2.setMap(this.mapObj);
+        // circleMarker2.setMap(this.mapObj);
+        AMap.plugin('AMap.Geocoder', function() {
+          var geocoder = new AMap.Geocoder({});
+          geocoder.getAddress(/*["123.46231","41.719623"]*/[self.circlePath.center.lng,self.circlePath.center.lat], function(status, result) {
+            if (status === 'complete' && result.info === 'OK') {
+              // result为对应的地理位置详细信息
+              var address = result.regeocode.formattedAddress;
+              self.keyword2=address;
+            }
+          })
+        });
+        /*AMap.plugin([
+          'AMap.ToolBar',
+        ], function(){
+          // 在图面添加工具条控件，工具条控件集成了缩放、平移、定位等功能按钮在内的组合控件
+          self.mapObj.addControl(new AMap.ToolBar({
+            // 简易缩放模式，默认为 false
+            liteStyle: true
+          }));
+        });*/
+        self.mapObj.plugin(["AMap.ControlBar"],function(){
+          var controlBar = new AMap.ControlBar({
+            position:{bottom:'25px',right:'10px'},
+            showZoomBar:true,
+            showControlButton:true
+
+          })
+          self.mapObj.addControl(controlBar)
+        });
+        self.mapObj.panTo([self.circlePath.center.lng,self.circlePath.center.lat]);
+        self.mapObj.on("click", function(e) {
+          self.mapObj.clearMap();
+          self.circlePath.center.lng=e.lnglat.lng;
+          self.circlePath.center.lat=e.lnglat.lat;
+          //self.keyword=self.geocoderAddress(self.circlePath.center.lng,self.circlePath.center.lat);
+          AMap.plugin('AMap.Geocoder', function() {
+            var geocoder = new AMap.Geocoder({});
+            geocoder.getAddress([self.circlePath.center.lng,self.circlePath.center.lat], function(status, result) {
+              if (status === 'complete' && result.info === 'OK') {
+                // result为对应的地理位置详细信息
+                var address = result.regeocode.formattedAddress;
+                self.keyword2=address;
+              }
+            })
+          });
+           self.map.remove([self.circleMarker2,self.carMarker2]);
+           self.circleMarker2=null;
+           self.carMarker2=null;
+          self.createCarMaker2(self.circlePath.center.lng,self.circlePath.center.lat);
+          self.createCircle2(self.circlePath.center.lng,self.circlePath.center.lat);
+          self.mapObj.panTo([self.circlePath.center.lng,self.circlePath.center.lat]);
+        });
+
+        //输入提示
+        /*   var auto = new CMMap.Autocomplete({
+             input: "addSuggestId"
+           });*/
+        //console.log()
+        AMapUI.loadUI(['misc/PoiPicker'], function(PoiPicker) {
+          var poiPicker = new PoiPicker({
+            //city:'北京',
+            input: 'addSuggestId2',
+
+          });
+          //初始化poiPicker
+          poiPickerReady(poiPicker);
+        });
+
+        function poiPickerReady(poiPicker) {
+          window.poiPicker = poiPicker;
+          //选取了某个POI
+          poiPicker.on('poiPicked', function(poiResult) {
+            poiPicker.clearSuggest();
+            //poiPicker.clearSearchResults();
+            let   poi = poiResult.item;
+            self.mapObj.clearMap();
+            self.circlePath.center.lng=poi.location.lng;
+            self.circlePath.center.lat=poi.location.lat;
+            //self.keyword=self.geocoderAddress(self.circlePath.center.lng,self.circlePath.center.lat);
+            AMap.plugin('AMap.Geocoder', function() {
+              var geocoder = new AMap.Geocoder({});
+              geocoder.getAddress([self.circlePath.center.lng,self.circlePath.center.lat], function(status, result) {
+                if (status === 'complete' && result.info === 'OK') {
+                  // result为对应的地理位置详细信息
+                  var address = result.regeocode.formattedAddress;
+                  self.keyword2=address;
+                }
+              })
+            });
+
+            self.mapObj.remove([self.circleMarker2,self.carMarker2]);
+            self.circleMarker2=null;
+            self.carMarker2=null;
+            self.createCarMaker2(self.circlePath.center.lng,self.circlePath.center.lat);
+            self.createCircle2(self.circlePath.center.lng,self.circlePath.center.lat);
+            //self.map.setFitView(self.map.getAllOverlays(),1.5);
+            //map.setCenter(marker.getPosition());
+            self.mapObj.panTo([self.circlePath.center.lng,self.circlePath.center.lat]);
+            //self.map.setZoomAndCenter(15,{lng:self.circlePath.center.lng,lat:self.circlePath.center.lat})
+          });
+        }
+        self.createCarMaker2(self.circlePath.center.lng,self.circlePath.center.lat);
+        self.createCircle2(self.circlePath.center.lng,self.circlePath.center.lat);
+      },
+      createCarMaker(lng,lat){
+        let self=this;
+        if(self.carMarker===null){
+
+          self.carMarker= new CMMap.Marker({
+            offset: new CMMap.Pixel(-9,-31),
+            //icon: iconCar, // 添加 Icon 实例
+            position: new CMMap.LngLat(lng,lat), // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+            title: 'car'
+          });
+
+        }
+        self.map.add(self.carMarker);
+        // self.carMarker.setMap(self.map);
+        //self.map.setFitView();
+      },
+      createCircle(lng,lat) {
+        let self=this;
+        if(self.circleMarker===null){
+          self.circleMarker = new CMMap.Circle({
+            center: new CMMap.LngLat(lng,lat), // 圆心位置
+            radius: 500,  //半径
+            strokeColor: "#1791fc",
+            strokeWeight: 2,
+            strokeOpacity: 0.8,
+            fillOpacity: 0.8,
+            fillColor: '#1791fc'
+          });
+
+        }
+        //self.circleMarker.setMap(self.map);
+        self.map.add(self.circleMarker);
+        //self.map.setFitView();
+      },
+      createCarMaker2(lng,lat){
+        let self=this;
+        if(self.carMarker2===null){
+          self.carMarker2=new AMap.Marker({
+            position: new AMap.LngLat(lng,lat),
+            offset: new AMap.Pixel(-13, -30)
+          });
+        }
+
+        self.mapObj.add( self.carMarker2);
+        // self.carMarker.setMap(self.map);
+        //self.map.setFitView();
+      },
+      createCircle2(lng,lat) {
+        let self=this;
+        if(self.circleMarker2===null){
+          self.circleMarker2=new AMap.Circle({
+            center: [lng,lat], // 圆心位置
+            radius: 500,  //半径
+            strokeColor: "#FF33FF",
+            strokeWeight: 1,
+            strokeOpacity: 0.2,
+            fillOpacity: 0.4,
+            fillColor: '#1791fc'
+          });
+        }
+
+        //self.circleMarker.setMap(self.map);
+        self.mapObj.add(self.circleMarker2);
+        //self.map.setFitView();
+      },
+      getGeoL() {
+        var  dingweiMarker=null,dingweiMarker2=null,circleMarker3=null,circleMarker4=null;
+        this.map.clearMap();
+        this.mapObj.clearMap();
+        console.log("3333--------geo--------heditu--------gaode");
+
+        this.mapObj.plugin('AMap.Geolocation', function () {
+          var geolocation = new AMap.Geolocation({
+            enableHighAccuracy: true, //是否使用高精度定位，默认:true
+            timeout: 10000, //超过10秒后停止定位，默认：无穷大
+            maximumAge: 0, //定位结果缓存0毫秒，默认：0
+            convert: true, //自动偏移坐标，偏移后的坐标为高德坐标，默认：true
+            showButton: false, //显示定位按钮，默认：true
+            //buttonPosition: 'LB', //定位按钮停靠位置，默认：'LB'，左下角
+            buttonOffset: new AMap.Pixel(10, 20), //定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+            showMarker: false, //定位成功后在定位到的位置显示点标记，默认：true
+            showCircle: false, //定位成功后用圆圈表示定位精度范围，默认：true
+            panToLocation: true, //定位成功后将定位到的位置作为地图中心点，默认：true
+            zoomToAccuracy: true //定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+          });
+
+         // ios环境切换到使用远程https定位
+          if (AMap.UA.ios&& document.location.protocol !== 'https:') {
+
+            //使用远程定位，见 remogeo.js
+            var remoGeo = new RemoGeoLocation();
+
+            //替换方法
+            navigator.geolocation.getCurrentPosition = function () {
+              return remoGeo.getCurrentPosition.apply(remoGeo, arguments);
+            };
+
+            //替换方法
+            navigator.geolocation.watchPosition = function () {
+              return remoGeo.watchPosition.apply(remoGeo, arguments);
+            };
+          }
+
+          //mapObj.addControl(geolocation);
+          //map.addControl(geolocation);
+          geolocation.getCurrentPosition();
+          AMap.event.addListener(geolocation, 'complete', onComplete); //返回定位信息
+          AMap.event.addListener(geolocation, 'error', onError); //返回定位出错信息
+
+        });
+
+        //解析定位结果
+        function onComplete (data) {
+          //document.getElementById('status').innerHTML='定位成功'
+          dingweiMarker = new CMMap.Marker({
+            icon: "https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
+            offset: new CMMap.Pixel(-13, -30),
+            position: data.position
+          });
+          circleMarker3 = new CMMap.Circle({
+            center: new CMMap.LngLat(data.position.lng, data.position.lat), // 圆心位置
+            radius: 500,  //半径
+            strokeColor: "#F33",  //线颜色
+            strokeOpacity: 1,  //线透明度
+            strokeWeight: 3,  //线粗细度
+            fillColor: "#ee2200",  //填充颜色
+            fillOpacity: 0.35 //填充透明度
+          });
+          dingweiMarker.setMap(this.map);
+          circleMarker3.setMap(this.map);
+          this.map.setZoomAndCenter(15, data.position);
+
+          console.log(data.position)
+
+          dingweiMarker2 = new AMap.Marker({
+            icon: "https://a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
+            offset: new AMap.Pixel(-13, -30),
+            position: new AMap.LngLat(data.position.lng, data.position.lat)
+          });
+
+          circleMarker4 = new AMap.Circle({
+            center: [data.position.lng, data.position.lat], // 圆心位置
+            radius: 500,  //半径
+            strokeColor: "#F33",  //线颜色
+            strokeOpacity: 1,  //线透明度
+            strokeWeight: 3,  //线粗细度
+            fillColor: "#ee2200",  //填充颜色
+            fillOpacity: 0.35 //填充透明度
+          });
+          dingweiMarker2.setMap(this.mapObj);
+          circleMarker4.setMap(this.mapObj);
+          // mapObj.add(circleMarker4)
+          this.mapObj.setZoomAndCenter(15, [data.position.lng, data.position.lat]);
+        }
+
+        //解析定位错误信息
+        function onError (data) {
+          //document.getElementById('status').innerHTML='定位失败'
+          //document.getElementById('result').innerHTML = '失败原因排查信息:'+data.message;
+          alert(data.message)
+        }
+      },
+      cssClear(){
+        this.keyword="";
+      },
+      cssClear2(){
+        this.keyword2="";
+      }
+    }
+  });
+  //self.map.add(self.dingweiMarker);
+  eruda.init();
+</script>
+</html>
