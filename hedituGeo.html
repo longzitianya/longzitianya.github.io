@@ -110,7 +110,7 @@
     mapObj.clearMap();
     console.log("66666666--------geo--------heditu--------gaode");
     console.log(navigator.userAgent.toLowerCase())
-    if (browser.versions.ios || browser.versions.iPhone || browser.versions.iPad||navigator.userAgent.toLowerCase().match(/MicroMessenger/i)=="micromessenger"||self.is_hemap()||navigator.userAgent.toLowerCase().indexOf("ucbrowser") != -1) {
+    if (navigator.userAgent.toLowerCase().indexOf("mzbrowser") === -1) {
     mapObj.plugin('AMap.Geolocation', function() {
       var geolocation = new AMap.Geolocation({
                 enableHighAccuracy: true, //是否使用高精度定位，默认:true
@@ -199,7 +199,7 @@
       //document.getElementById('result').innerHTML = '失败原因排查信息:'+data.message;
       alert(data.message)
     }
-    }else if (browser.versions.android) {
+    }else{
       console.log(navigator.geolocation.getCurrentPosition)
       navigator.geolocation.getCurrentPosition(function (position) {
         //得到html5定位结果
