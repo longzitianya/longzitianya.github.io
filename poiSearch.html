@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,minimal-ui">
     <title>和地图与高德</title>
     <link rel="stylesheet" href="https://cache.amap.com/lbs/static/main1119.css" />
+    <link rel="stylesheet" href="https://unpkg.com/muse-ui/dist/muse-ui.css">
+
     <style type="text/css">
         body {
             position: absolute;
@@ -191,10 +193,6 @@
             outline:none;
         }
         #r-result{width:100%;}
-        .selectArea{
-            background: #fff;
-            min-height:60px;
-        }
         .selectArea2{
             background: #fff;
             min-height: 60px;
@@ -249,14 +247,35 @@
     <button  title='定位' @click="getGeoL"  class="geoLocation"  ></button>
     </div>-->
     <div id="mapContainer" style="position: relative;"></div>
+    <div class="selectArea2 panel">
+        <div class="fl colorBlue" style="line-height: 30px; margin-right: 20px;"><i class="iconfont  icon-xunhuan"></i> 区域范围</div>
+        <div class="fl " style="width: 45%;">
+            <mu-slider class="demo-slider" track-color="#ff4081"  v-model="radius":min="500"
+                       :max="1500"
+                       :step="100" @change="radiusChange">
+            </mu-slider>
+        </div>
+        <div class="fr " style="width:15%;"> {{radius}}M</div>
+    </div>
     <div id="r-result2">
         <input   autocomplete="off" id="addSuggestId2" v-model="keyword2"  class="input" placeholder="请输入安全区域地址"/>
         <a href="javascript:;" class="clear2" v-if="keywordFlag2" @click="cssClear2"></a>
+    </div>
+    <div class="selectArea2 panel">
+        <div class="fl colorBlue" style="line-height: 30px; margin-right: 20px;"><i class="iconfont  icon-xunhuan"></i> 区域范围</div>
+        <div class="fl " style="width: 45%;">
+            <mu-slider class="demo-slider" track-color="#ff4081"  v-model="radius":min="500"
+                       :max="1500"
+                       :step="100" @change="radiusChange">
+            </mu-slider>
+        </div>
+        <div class="fr " style="width:15%;"> {{radius}}M</div>
     </div>
     <div id="iCenter" style="position: relative;"></div>
 </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+<script src="https://unpkg.com/muse-ui/dist/muse-ui.js"></script>
 <script  type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=4af62d0316bc14f5d241333961cddbb9&plugin=AMap.Geolocation,AMap.Geocoder,AMap.CitySearch,AMap.GraspRoad" ></script>
 <!-- UI组件库 1.0 -->
 <script src="https://webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>

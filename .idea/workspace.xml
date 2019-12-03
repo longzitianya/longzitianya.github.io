@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="4b2e1bcb-7548-4aaf-b36f-96315f2a38e6" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/clear_circle.png" />
+      <change beforePath="$PROJECT_DIR$/clear_circle.png" afterPath="$PROJECT_DIR$/clear_circle.png" />
+      <change beforePath="$PROJECT_DIR$/hedituGeo.html" afterPath="$PROJECT_DIR$/hedituGeo.html" />
+      <change beforePath="$PROJECT_DIR$/poiSearch.html" afterPath="$PROJECT_DIR$/poiSearch.html" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -16,27 +18,27 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="poiSearch.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="poiSearch.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/poiSearch.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="504" column="62" lean-forward="false" selection-start-line="504" selection-start-column="62" selection-end-line="504" selection-end-column="62" />
+            <state relative-caret-position="285">
+              <caret line="198" column="31" lean-forward="true" selection-start-line="198" selection-start-column="31" selection-end-line="198" selection-end-column="31" />
               <folding>
                 <element signature="n#style#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#div#3;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-                <marker date="1575355644419" expanded="true" signature="11011:11129" ph="//..." />
-                <marker date="1575355644419" expanded="true" signature="16355:16478" ph="//..." />
+                <element signature="n#style#0;n#div#5;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="hedituGeo.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="hedituGeo.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/hedituGeo.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="304">
-              <caret line="46" column="69" lean-forward="true" selection-start-line="46" selection-start-column="41" selection-end-line="46" selection-end-column="69" />
-              <folding />
+            <state relative-caret-position="399">
+              <caret line="142" column="13" lean-forward="false" selection-start-line="142" selection-start-column="13" selection-end-line="142" selection-end-column="13" />
+              <folding>
+                <marker date="1575360969405" expanded="true" signature="4395:4886" ph="{...}" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -50,6 +52,7 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/poiSearch.html" />
+        <option value="$PROJECT_DIR$/hedituGeo.html" />
       </list>
     </option>
   </component>
@@ -60,10 +63,10 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-100" />
-    <option name="y" value="32" />
-    <option name="width" value="1364" />
-    <option name="height" value="728" />
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1382" />
+    <option name="height" value="744" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1">
@@ -130,12 +133,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1575341939237</updated>
-      <workItem from="1575341942672" duration="5496000" />
+      <workItem from="1575341942672" duration="8080000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="5496000" />
+    <option name="totallyTimeSpent" value="8080000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -171,23 +174,23 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/hedituGeo.html">
+    <entry file="file://$PROJECT_DIR$/poiSearch.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
-          <caret line="46" column="69" lean-forward="true" selection-start-line="46" selection-start-column="41" selection-end-line="46" selection-end-column="69" />
-          <folding />
+        <state relative-caret-position="285">
+          <caret line="198" column="31" lean-forward="true" selection-start-line="198" selection-start-column="31" selection-end-line="198" selection-end-column="31" />
+          <folding>
+            <element signature="n#style#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#div#5;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/poiSearch.html">
+    <entry file="file://$PROJECT_DIR$/hedituGeo.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="504" column="62" lean-forward="false" selection-start-line="504" selection-start-column="62" selection-end-line="504" selection-end-column="62" />
+        <state relative-caret-position="399">
+          <caret line="142" column="13" lean-forward="false" selection-start-line="142" selection-start-column="13" selection-end-line="142" selection-end-column="13" />
           <folding>
-            <element signature="n#style#0;n#div#1;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#div#3;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-            <marker date="1575355644419" expanded="true" signature="11011:11129" ph="//..." />
-            <marker date="1575355644419" expanded="true" signature="16355:16478" ph="//..." />
+            <marker date="1575360969405" expanded="true" signature="4395:4886" ph="{...}" />
           </folding>
         </state>
       </provider>
