@@ -32,10 +32,10 @@
       <file leaf-file-name="hedituGeo.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/hedituGeo.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="247">
-              <caret line="110" column="24" lean-forward="false" selection-start-line="110" selection-start-column="24" selection-end-line="110" selection-end-column="24" />
+            <state relative-caret-position="217">
+              <caret line="248" column="67" lean-forward="false" selection-start-line="248" selection-start-column="67" selection-end-line="248" selection-end-column="67" />
               <folding>
-                <marker date="1575361046625" expanded="true" signature="4398:4889" ph="{...}" />
+                <element signature="e#7026#7198#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -131,12 +131,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1575341939237</updated>
-      <workItem from="1575341942672" duration="8158000" />
+      <workItem from="1575341942672" duration="8458000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="8158000" />
+    <option name="totallyTimeSpent" value="8458000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
@@ -185,10 +185,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/hedituGeo.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="247">
-          <caret line="110" column="24" lean-forward="false" selection-start-line="110" selection-start-column="24" selection-end-line="110" selection-end-column="24" />
+        <state relative-caret-position="217">
+          <caret line="248" column="67" lean-forward="false" selection-start-line="248" selection-start-column="67" selection-end-line="248" selection-end-column="67" />
           <folding>
-            <marker date="1575361046625" expanded="true" signature="4398:4889" ph="{...}" />
+            <element signature="e#7026#7198#0" expanded="false" />
           </folding>
         </state>
       </provider>

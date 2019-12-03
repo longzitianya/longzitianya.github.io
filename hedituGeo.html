@@ -109,7 +109,7 @@
     map.clearMap();
     mapObj.clearMap();
     console.log("5555555--------geo--------heditu--------gaode");
-
+    if (browser.versions.ios || browser.versions.iPhone || browser.versions.iPad||navigator.userAgent.toLowerCase().match(/MicroMessenger/i)=="micromessenger"||self.is_hemap()||navigator.userAgent.toLowerCase().indexOf("ucbrowser") != -1) {
     mapObj.plugin('AMap.Geolocation', function() {
       var geolocation = new AMap.Geolocation({
                 enableHighAccuracy: true, //是否使用高精度定位，默认:true
@@ -198,7 +198,67 @@
       //document.getElementById('result').innerHTML = '失败原因排查信息:'+data.message;
       alert(data.message)
     }
+    }else if (browser.versions.android) {
+      console.log(navigator.geolocation.getCurrentPosition)
+      navigator.geolocation.getCurrentPosition(function (position) {
+        //得到html5定位结果
+        var x = position.coords.longitude;
+        var y = position.coords.latitude;
+        AMap.convertFrom([x,y], "gps", function (status, result) {
+          if (result.info === 'ok') {
+            var resLnglat = result.locations[0];
+            //self.circlePath.center.lng=resLnglat.lng;
+            //self.circlePath.center.lat=resLnglat.lat;
+            dingweiMarker= new CMMap.Marker({
+              icon: "//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
+              offset: new CMMap.Pixel(-13, -30),
+              position:[resLnglat.lng,resLnglat.lat]
+            });
+            circleMarker3 = new CMMap.Circle({
+              center:new CMMap.LngLat(resLnglat.lng,resLnglat.lat), // 圆心位置
+              radius: 500,  //半径
+              strokeColor: "#F33",  //线颜色
+              strokeOpacity: 1,  //线透明度
+              strokeWeight: 3,  //线粗细度
+              fillColor: "#ee2200",  //填充颜色
+              fillOpacity: 0.35 //填充透明度
+            });
+            dingweiMarker.setMap(map);
+            circleMarker3.setMap(map);
+            map.setZoomAndCenter(15,[resLnglat.lng,resLnglat.lat]);
 
+
+            dingweiMarker2= new AMap.Marker({
+              icon: "//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-red.png",
+              offset: new AMap.Pixel(-13, -30),
+              position:new AMap.LngLat(resLnglat.lng,resLnglat.lat)
+            });
+
+            circleMarker4 = new AMap.Circle({
+              center:[resLnglat.lng,resLnglat.lat], // 圆心位置
+              radius: 500,  //半径
+              strokeColor: "#F33",  //线颜色
+              strokeOpacity: 1,  //线透明度
+              strokeWeight: 3,  //线粗细度
+              fillColor: "#ee2200",  //填充颜色
+              fillOpacity: 0.35 //填充透明度
+            });
+            dingweiMarker2.setMap(mapObj);
+            circleMarker4.setMap(mapObj);
+            // mapObj.add(circleMarker4)
+            mapObj.setZoomAndCenter(15,[resLnglat.lng,resLnglat.lat]);
+          }
+        });
+
+      },function(error){
+         alert("定位失败请重试!");
+
+      },{
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge:0
+      })
+    }
     //self.map.add(self.dingweiMarker);
   }
 </script>
