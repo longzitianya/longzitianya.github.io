@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,minimal-ui">
+    <title>历史轨迹高德地图</title>
+    <link rel="stylesheet" href="https://cache.amap.com/lbs/static/main1119.css" />
+    <link rel="stylesheet" href="https://unpkg.com/muse-ui/dist/muse-ui.css">
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/mint-ui/lib/style.css">
+    <style type="text/css">
+        body {
+            position: absolute;
+            margin: 0;
+            width: 100%;
+            height: 100%;
+        }
+        #app{
+            position: absolute;
+            left:0;
+            top:0;
+            width: 100%;
+            height:100%;
+            transition: all 0.5s cubic-bezier(0.55,0,0.1,1);
+            overflow: hidden;
+            background: #F0EFF5;
+        }
+        #mapContainer{
+            left: 0px;
+            top: 0px;
+        }
+
+        #dateSelected{
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #f5f5f5;
+            z-index: 99;
+            padding: 10px 0;
+        }
+        .timeselectbox{
+            height:40px;
+            background:#FFF;
+        }
+        .timeselectbox li{
+            list-style: none;
+            float:left;
+            height:35px;
+            line-height:35px;
+            margin-top:5px;
+            color:black;
+        }
+        .daybefore{
+            width:28%;
+            padding-left:10px;
+            font-size:13.5px;
+        }
+        .dateselect{
+            border-radius: 3px;
+            background:#fff;
+            width:44%;
+            text-align:center;
+        }
+        .nextday{
+            text-align: right;
+            width:28%;
+            padding-right:10px;
+            font-size:13.5px;
+        }
+        .mint-button--default {
+            color: #2f343b;
+            background-color: #ffffff;
+            box-shadow: none!important;
+            height: 30px;
+            font-size: 15px;
+        }
+        #dateSelected .inline{
+            float: left;
+            line-height: 20px;
+            /*display: inline;*/
+        }
+        .predate,.nextdate{
+            width: 20%;
+            text-align: center;
+
+        }
+        .selectDate{
+
+            width: 59%;
+            text-align: center;
+        }
+        #arcMapContainer{
+            width: 100%;
+            height:100%;
+        }
+        #locationInfor{
+            width: 100%;
+            position: fixed;
+            left: 0;
+            bottom: 0px;
+            padding: 5px 0;
+            background-color: #fff;
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+            z-index: 9;
+        }
+        #locationInfor2{
+            width: 100%;
+            position: fixed;
+            left: 0;
+            bottom: 55px;
+            padding: 5px 0;
+            background-color: #fff;
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+            z-index: 9;
+        }
+        .inforTitle,.inforTimer{
+            padding-left: 10px;
+            padding-right: 10px;
+            font-size: 12px;
+        }
+        .inforTitle{
+            padding-top: 10px;
+            margin-bottom: 10px;
+            font-size: 12px;
+        }
+        #bottomWraper{
+            width: 100%;
+            padding:.1em 0;
+            background-color: #ffffff;
+            position: fixed;
+            left: 0;
+            bottom: 0;
+        }
+        .bottomItem{
+            width: 25%;
+            text-align: center;
+            float: left;
+            overflow: hidden;
+            height: 53px;
+            padding: 8px 0;
+        }
+        .itemImg{
+            width: 100%;
+            text-align: center;
+            height: 70%;
+            overflow: hidden;
+        }
+
+        .itemTxt{
+            font-size: 15px;
+            line-height: 10px;
+        }
+        .itemImg img{
+            height: 70%;
+        }
+        .blue{
+            color:#71afe2 ;
+        }
+        .amap-icon img,
+        .amap-marker-content img{
+            width: 25px;
+            height: 34px;
+        }
+
+        .marker {
+            top: -20px;
+            right: -118px;
+            color: #fff;
+            padding: 4px 10px;
+            box-shadow: 1px 1px 1px rgba(10, 10, 10, .2);
+            white-space: nowrap;
+            font-size: 12px;
+            font-family: "";
+            background-color: #25A5F7;
+            border-radius: 3px;
+        }
+        .cmmap-luopan {
+            width: 184px;
+            display: none;
+        }
+        .amap-luopan{
+            width: 184px;
+            display: none;
+        }
+        .geoLocation{
+            background-size: 32px 32px!important;
+            background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAACjklEQVRIS72WTWgTURSFvzdD0nZRXRUXdeFK0ZXgTlxYEKfJwmYs7cYiikWF4qLg/8Z21YqgoFDxByqUUonKTBSSzqBYUFwpuImiCIq4UhDBjYRmbplJfzJpEjstyV2+ue+ceeede99VRA3buQacRbxRzMRI1O0q0oZM7jCiPVneIyQxjVwUjGiE9uw9UINlBEOkjInGEabftBH/OwX0gpojPt9PMvmrcYRLyFZuP2ZiLgrRUm40SesxZLObKMS3kjrwoV5abcKMO4BwApEZ2uQx3d2/AyDbnQQ5huIunjeGmfhGxrkf5PqhyBMrdtWSujrhsxedFOc/Au2LIAP0GNNYuRGUdmXFpd5xWmSGgv6v4lTjpIxL1U5andDKbUNpX0PAZuIBtjMGXCwri0Faik8p6N+B1jKCCVLG0NoJA+mc68BwSLpstoOC9hrUduAd6EeDO7Pd2yCnFwneI95wLVOtzzTVXGq5u9HZSTGWw+z6U8s4jSX0f0zTexHZgvAK07ilyLiHEDGAPK3ycNmNlnMSxZ1Qz7TdJHg3SpLKZ1LdOxadu1pSFfsJxXzopEr1K2znLbAn5Eb7+a5QslL99Bx8RGVrU+oCsfnJqqaBzcCRCmm/VCf0pVDay1UutZwpFANlIOOI54RySx+ngTjQFyIU+VFbUtu5CZwJudR2B8E7tyxp3NsXFLjtpEPg4nWh6R2I+OsrId5odNOk03Fi7XtX2d5vCn5oej6Q34+M24fIZYRONCx6jFPRCX2ghpTFfwtfzdHq9Qau3nDhr7W1+QaKFd2Nt7amN+/ShTfxearVCOutb/gBrgfe1BHDnv1UKvxmDFEZ9zwiV8sO3+AxsZKw4YNwaRLwR4yx9Y76CylRZ2A9683RAAAAAElFTkSuQmCC)  !important ;
+            background-repeat: no-repeat;
+            width: 32px;
+            height:32px;
+            border: none;
+            border-radius: 15px;
+            background: #fff;
+            position: absolute;
+            bottom:250px;
+            left:10px;
+        }
+        .geoLocation:active,.geoLocation:focus{
+            border: none;
+            outline:none;
+        }
+    </style>
+
+</head>
+
+<body >
+<div id="app">
+    <div class="timeselectbox">
+        <li class="daybefore" @click="getYesterday(timeBtn)">
+            前一天
+        </li>
+        <li class="dateselect">
+            <mt-button  @click="openTime" size="large" class="font-size  selectTime">选择日期</mt-button>
+        </li>
+        <li class="nextday" @click="getTomorrow(timeBtn)">
+            后一天
+        </li>
+    </div>
+    <mt-datetime-picker
+            ref="picker2"
+            type="date"
+            :endDate="new Date()"
+            v-model="nowDate"
+            year-format="{value} 年"
+            month-format="{value} 月"
+            date-format="{value} 日"
+            @confirm="handleChange">
+    </mt-datetime-picker>
+    <div style="position: absolute;left:10px;bottom:10px;z-index:10;">
+        <button  title='调整视野' @click="setFitViewAll"  class="geoLocation"  ></button>
+    </div>
+    <div id="mapContainer" :style="{'width':vWidth+'px','height':vHeight+'px','position':'static'}"></div>
+    <!--地址详细信息-->
+    <div id="locationInfor" v-show="defaultInforShow">
+        <div>
+            <div class="inforTitle" ref="infortitle"> {{showData}}</div>
+            <div class="inforTimer">
+                <span class="startTimer" ref="timer">{{period}}</span>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+<script src="https://unpkg.com/muse-ui/dist/muse-ui.js"></script>
+<!-- 引入组件库 -->
+<script src="https://unpkg.com/mint-ui/lib/index.js"></script>
+<script  type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=4af62d0316bc14f5d241333961cddbb9&plugin=AMap.Geolocation,AMap.Geocoder,AMap.CitySearch,AMap.GraspRoad" ></script>
+<!-- UI组件库 1.0 -->
+<script src="https://webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
+<script type="text/javascript" src="https://js.mlocso.com:9095/SDKService/jssdk/auth?v=2.0&key=1586sax375sk36n566b0rc5khzs836bh&name=bundle&plugin=CMMap.ToolBar"></script>
+<script src="https://unpkg.com/gcoord/dist/gcoord.js"></script>
+<script src="http://cdn.jsdelivr.net/npm/eruda"></script>
+<script type="text/javascript" >
+    Date.prototype.format = function(fmt) {
+        var o = {
+            "M+" : this.getMonth()+1,                 //月份
+            "d+" : this.getDate(),                    //日
+            "h+" : this.getHours(),                   //小时
+            "m+" : this.getMinutes(),                 //分
+            "s+" : this.getSeconds(),                 //秒
+            "q+" : Math.floor((this.getMonth()+3)/3), //季度
+            "S"  : this.getMilliseconds()             //毫秒
+        };
+        if(/(y+)/.test(fmt)) {
+            fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));
+        }
+        for(var k in o) {
+            if(new RegExp("("+ k +")").test(fmt)){
+                fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+            }
+        }
+        return fmt;
+    };
+    Vue.prototype.getViewportSize = function(){
+        return {
+            width: window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+            height: window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+        };
+    };
+    Vue.prototype.$timestampToTime = (timestamp) => {
+        var date = new Date(timestamp)
+        let h = (date.getHours() < 10 ? '0' + (date.getHours()) : date.getHours()) + ':'
+        let m =  (date.getMinutes() < 10 ? '0' + (date.getMinutes()) : date.getMinutes())
+        return h + m
+    }
+    var app= new Vue({
+        el:"#app",
+        data:{
+            markerArry:[],
+            timeBtn:new Date().format("yyyy-MM-dd"),
+            //timeBtn:'2018-11-20',
+            //nowDate:new Date().format("yyyy-MM-dd"),
+            nowDate:new Date().format("yyyy-MM-dd"),
+            defaultInforShow:true, //信息詳細
+            dataInfor:[{"time":0,"beginTime":1542651762264,"endTime":1542684889000,"lon":123.42370042144084,"lat":41.688182543209976,"precision":30,"address":"辽宁省沈阳市东陵区(碧桂园公园里内)","locateType":3},{"time":0,"beginTime":1542685075000,"endTime":1542685075000,"lon":123.42365027309522,"lat":41.688089696566955,"precision":32,"address":"辽宁省沈阳市东陵区(碧桂园公园里内)","locateType":3},{"time":0,"beginTime":1542685200000,"endTime":1542685200000,"lon":123.42216658812416,"lat":41.68763141895944,"precision":30,"address":"辽宁省沈阳市东陵区高深路(碧桂园公园里内)","locateType":3},{"time":0,"beginTime":1542685262000,"endTime":1542685262000,"lon":123.42193150931163,"lat":41.68701844446907,"precision":38,"address":"辽宁省沈阳市东陵区高深路(碧桂园公园里内)","locateType":3},{"time":0,"beginTime":1542685324000,"endTime":1542685324000,"lon":123.42185662127233,"lat":41.6863387638757,"precision":30,"address":"辽宁省沈阳市东陵区高深路(跳蚤市场东213米)","locateType":3},{"time":0,"beginTime":1542685387000,"endTime":1542685387000,"lon":123.4203105633789,"lat":41.68707365334242,"precision":30,"address":"辽宁省沈阳市东陵区高深路(跳蚤市场北108米)","locateType":3},{"time":0,"beginTime":1542685449000,"endTime":1542685449000,"lon":123.42140732160289,"lat":41.69133690599267,"precision":550,"address":"辽宁省沈阳市东陵区(白塔公园内)","locateType":3},{"time":0,"beginTime":1542685512000,"endTime":1542685512000,"lon":123.42877607208106,"lat":41.69408077296186,"precision":69,"address":"辽宁省沈阳市东陵区白塔河路(东大软件园-东南2门南515米)","locateType":3},{"time":0,"beginTime":1542685571000,"endTime":1542685571000,"lon":123.43059747662495,"lat":41.69809277352689,"precision":30,"address":"辽宁省沈阳市东陵区世纪路41号(东软软件园-东南1门南103米)","locateType":3},{"time":0,"beginTime":1542685607000,"endTime":1542685607000,"lon":123.430748,"lat":41.698746,"precision":22,"address":"辽宁省沈阳市东陵区世纪路39号(东软软件园内)","locateType":1},{"time":0,"beginTime":1542685711000,"endTime":1542685659000,"lon":123.42991261803876,"lat":41.699212697964214,"precision":25,"address":"辽宁省沈阳市东陵区世纪路(东软软件园内)","locateType":3},{"time":0,"beginTime":1542685791000,"endTime":1542685791000,"lon":123.4311412718027,"lat":41.699500502128274,"precision":32,"address":"辽宁省沈阳市东陵区世纪路39号(东软软件园内)","locateType":3},{"time":0,"beginTime":1542685978000,"endTime":1542728701000,"lon":123.4308111838239,"lat":41.69910095578948,"precision":30,"address":"辽宁省沈阳市东陵区世纪路39号(东软软件园内)","locateType":3}],
+            showData:'', //详细地址
+            period:'', //精确到时间
+            map:null,
+            vWidth:320,
+            vHeight:568
+        },
+        watch: {
+
+        },
+        activated() {
+            this.timeBtn=new Date().format("yyyy-MM-dd");
+            this.getData()
+        },
+        created(){
+            this.vWidth=this.getViewportSize().width;
+            this.vHeight=this.getViewportSize().height-70-40;
+        },
+        mounted(){
+            this.initMap();
+        },
+        methods: {
+            setFitViewAll(){
+                this.map.setFitView(this.map.getAllOverlays(),2);
+            },
+            //页面加载完执行操作
+            getData() {
+                let  self=this;
+                self.dataInforArr();
+            },
+            //ajax遍历后台数据并执行操作
+            dataInforArr() {
+                //判断,当请求成功以后执行
+                // console.log(dataInforArr);
+                if (this.dataInfor.length === 0) { //判断是否有历史路径，没有不显示默认信息
+                    this.showData = "该日期无历史数据";
+                    this.period='';
+                    this.initMap();
+                    this.vHeight=this.getViewportSize().height-70-32;
+                }else {
+                    this.vHeight=this.getViewportSize().height-70-40;
+                    this.initMap();
+                }
+
+            },
+            initMap(){
+                var   _this = this; // 改变this作用域
+                var resultArry = [];
+                if(_this.map===null) {
+                    _this.map = new AMap.Map("mapContainer", {
+                        resizeEnable: true,
+                        rotateEnable: true,
+                        zoom: 4
+                    });
+                }
+
+                _this.map.plugin(["AMap.ControlBar"],function(){
+                    var controlBar = new AMap.ControlBar({
+                        position:{bottom:'25px',right:'10px'},
+                        showZoomBar:true,
+                        showControlButton:true
+
+                    })
+                    _this.map.addControl(controlBar)
+                });
+                _this.map.clearMap();
+                if(_this.dataInfor.length>1){
+                    //转换成百度经纬度
+                    _this.changeCoord(_this.dataInfor, resultArry);
+                    let point = new AMap.LngLat(resultArry[0][0], resultArry[0
+                        ][1]);
+                    // map.enableScrollWheelZoom(true); // 开启滚轮缩放;
+                    _this.markers(resultArry, _this.map, _this.dataInfor);//加载多个标注点
+                    //创建中心点
+                    _this.map.setZoom(14);
+                    // _this.map.setZoomAndCenter(14,point);//初始化地图实例,缩放级别
+                    _this.defaultInfor(_this.dataInfor); //初始化默认信息
+                }else if(_this.dataInfor.length===1){
+                    //转换成百度经纬度
+                    _this.changeCoord(_this.dataInfor, resultArry);
+                    // console.log(resultArry);
+                    let point = new AMap.LngLat(resultArry[0][0], resultArry[0
+                        ][1]);
+
+                    // map.enableScrollWheelZoom(true); // 开启滚轮缩放;
+                    _this.singleMarker(resultArry, _this.map, _this.dataInfor);
+                    //创建中心点
+                    _this.map.setZoomAndCenter(17,point);//初始化地图实例,缩放级别
+                    // this.markers(resultArry, map, dataInfor);//加载多个标注点
+                    // this.defaultInfor(dataInfor); //初始化默认信息
+                }else{
+
+                    _this.map.setZoomAndCenter(4,[116.397428, 39.90923] );//初始化地图实例,缩放级别
+                }
+            },
+            //转换gaode地图经纬度坐标
+            changeCoord(data, arry) {
+                for (var i = 0; i < data.length; i++) {
+                    for (var i = 0; i < data.length; i++) {
+                       /* let result = gcoord.transform( // result 是一个数组[经度，纬度]
+                            [data[i].lon, data[i].lat],    // 经纬度坐标
+                            gcoord.WGS84,               // 当前坐标系
+                            gcoord.GCJ02                 // 目标坐标系
+                        );*/
+                        arry.push([data[i].lon, data[i].lat]); //转换后经纬度坐标存在resultArry这个数组里
+                    }
+                }
+            },
+            //默认起点数据信息
+            defaultInfor(infor) {
+                this.showData = infor[0].address;
+                let startTime = this.$timestampToTime(infor[0].beginTime);
+                let endTime = this.$timestampToTime(infor[0].endTime);
+                this.period = this.timeBtn+'  '+ startTime + '~' + endTime +' 采用'+ this.getLocateType(infor[0].locateType)+'定位(精准到' +infor[0].precision  +'米)';
+            },
+            //转换后台数值对应定位方法
+            getLocateType(num){
+                let method='';
+                if(num === 1){
+                    method='GPS';
+                }else if (num === 2){
+                    method='LBS';
+                } else if (num === 3){
+                    method='WIFI';
+                } else if (num === 4){
+                    method='BT';
+                }
+                return method;
+            },
+            //返回数据只有一个、标注点只有一个时
+            singleMarker(resultArry, map, dataInfor) {
+                let _this = this;//改变this作用域
+                if(resultArry.length == 1){
+                    // console.log(resultArry);
+                    let pointFirst = new AMap.LngLat(resultArry[0][0], resultArry[0][1]);//创建中心点
+                    map.setZoomAndCenter(17,pointFirst);//初始化地图实例,缩放级别
+                    // 起点终点图标
+                    var startEnd_Icon = new AMap.Icon({
+                        size:new AMap.Size(42, 42), // 图标尺寸
+                        imageSize:new AMap.Size(42,42),
+                        image: './start.png', // Icon的图像
+                        imageOffset: new AMap.Pixel(0,0)
+                    });
+                    var firstMark = new AMap.Marker({
+                        imageOffset: new AMap.Pixel(-5,0),
+                        icon: startEnd_Icon, // 添加 Icon 实例
+                        position: pointFirst // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+                    });
+                    firstMark.setMap(map);
+                    // map.setFitView(null,2);
+                    _this.defaultInfor(dataInfor); //初始化默认信息
+                }else if (resultArry.length > 1){
+                    _this.markers(dataInfor,resultArry,map);
+                }
+            },
+            //创建多个标注点并把折线显示出来(箭头图标)，点击每个点显示对应数据
+            markers(resultArry, map, dataInfor){
+                let _this =this;
+                let routerinfor=[];//获取除去起始点 的其他点信息
+                let pointsArry = [];//存储所有转换成百度经纬度的点
+                /*  let myIcon = new BMap.Icon("./lishi2.png", new BMap.Size(20,20),{imageSize:new BMap.Size(20,20)}); // 自定义图标*/
+                let myIcon = new AMap.Icon({
+                    size:new AMap.Size(20, 20), // 图标尺寸
+                    imageSize:  new AMap.Size(20,20),
+                    image: './lishi2.png', // Icon的图像
+                    imageOffset: new AMap.Pixel(0,0)
+                });
+                let data_lenght = resultArry.length;
+                let angles = [];
+                //获取所有点
+                for (var i = 0; i < data_lenght; i++) {
+                    pointsArry.push(new AMap.LngLat(resultArry[i][0], resultArry[i][1]));
+                };
+                routerinfor=dataInfor.slice(1,data_lenght-1);
+                //获取除起始点的其他点
+                let routerPoints = pointsArry.slice(1, data_lenght - 1);
+                //获取除起始点以外的其他点个数
+                let routerLenght = routerPoints.length; //10
+                //获取角度集合
+                for (var t = 1; t < data_lenght - 1; t++) {
+                    let singleAngle = _this.getAngle2(pointsArry[t].lat, pointsArry[t].lng, pointsArry[t + 1].lat, pointsArry[t + 1].lng);
+                    angles.push(singleAngle);
+                };
+                let pointsArr =new Array();
+                for (var u = 0; u < routerLenght; u++) {
+                    let points = new AMap.LngLat(routerPoints[u].lng, routerPoints[u].lat);
+                    pointsArr.push(points)
+                    console.log("-"+angles[u]);
+                    var  marker = new AMap.Marker({
+                        offset:new AMap.Pixel(-10,-10),
+                        autoRotation: false,
+                        angle:angles[u],
+                        icon: myIcon, // 添加 Icon 实例
+                        position: points // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+                        // rotation: angles[u]
+                    });
+                    let content=routerinfor[u].address;
+                    let starttime=routerinfor[u].beginTime;
+                    let endtime=routerinfor[u].endTime;
+                    let localType = _this.getLocateType(routerinfor[u].locateType);
+                    let meter = routerinfor[u].precision;
+
+                    //map.addOverlay(marker);
+
+                    //marker.setMap(map);
+                    marker.setMap(map);
+
+                    // map.setFitView(null,2);
+                    //每个点坐标点 击出现对应信息
+                    _this.addClickHandler(marker,content,_this,starttime,endtime,localType,meter);
+
+                };
+                let startEnd_Icon = new AMap.Icon({// 起点终点图标
+                    size:new AMap.Size(42,42), // 图标尺寸
+                    imageSize: new AMap.Size(42,42),
+                    image: './start.png', // Icon的图像
+                    imageOffset: new AMap.Pixel(-5,0)
+                });
+                let endPoint_Icon = new AMap.Icon({//终点图标
+                    size:new AMap.Size(42,42), // 图标尺寸
+                    imageSize: new AMap.Size(42,42),
+                    image: './end.png', // Icon的图像
+                    imageOffset: new AMap.Pixel(-5,0)
+                });
+                //改变起点图标
+                let firstMark =  new AMap.Marker({
+                    position:new AMap.LngLat(pointsArry[0].lng, pointsArry[0].lat),
+                    icon: startEnd_Icon
+                });
+                firstMark.setMap(map);
+                //起点图标点击对应信息
+                _this.addClickHandler(firstMark,dataInfor[0].address,_this,dataInfor[0].beginTime,dataInfor[0].endTime,_this.getLocateType(dataInfor[0].locateType),dataInfor[0].precision)
+                //firstMark.addEventListener("click",_this.addClickHandler(firstMark,dataInfor[0].address,_this,dataInfor[0].beginTime,dataInfor[0].endTime,_this.getLocateType(dataInfor[0].locateType),dataInfor[0].precision));
+                //改变终点图标
+                let endMark =  new AMap.Marker({
+                    position:new AMap.LngLat(pointsArry[data_lenght - 1].lng,pointsArry[data_lenght - 1].lat),
+                    icon: endPoint_Icon
+                });
+                endMark.setMap(map);
+                //终点图标点击对应信息
+                _this.addClickHandler(endMark,dataInfor[data_lenght - 1].address,_this,dataInfor[data_lenght - 1].beginTime,dataInfor[data_lenght - 1].endTime,_this.getLocateType(dataInfor[data_lenght - 1].locateType),dataInfor[data_lenght - 1].precision)
+                //endMark.addEventListener("click",_this.addClickHandler(endMark,dataInfor[data_lenght - 1].address,_this,dataInfor[data_lenght - 1].beginTime,dataInfor[data_lenght - 1].endTime,_this.getLocateType(dataInfor[data_lenght - 1].locateType),dataInfor[data_lenght - 1].precision));
+
+                //在地图上加载折线
+                _this.polylineCreate(map, pointsArry);
+               //map.setFitView(map.getAllOverlays(),1.5);
+              map.panTo(new AMap.LngLat(pointsArry[data_lenght- 1].lng,pointsArry[data_lenght- 1].lat));
+                //让所有点在视野范围内
+                // map.setFitView(null,1.5);
+
+            },
+            //坐标点点击对应信息
+            addClickHandler(marker,content,self,startTime,endTime,localType,meter){//marker 是标注点 content是对应信息，self是this作用域，startTime是开始时间，endTime是返回时间，,meter是米
+                let  that=this;
+                marker.on("click", function(e) {
+                    self.showData = content; //地址
+                    // startTime=that.$timestampToTime(startTime);
+                    // endTime=that.$timestampToTime(endTime);
+                    self.period = new Date(self.nowDate).format("yyyy-MM-dd")+'  '+ that.$timestampToTime(startTime) + '~' + that.$timestampToTime(endTime)+'  '+ '采用' + localType +'定位(精准到' + meter +'米)';
+                });
+               /* marker.addEventListener("click",function (e) {
+                    self.showData = content; //地址
+                    // startTime=that.$timestampToTime(startTime);
+                    // endTime=that.$timestampToTime(endTime);
+                    self.period = new Date(self.nowDate).format("yyyy-MM-dd")+'  '+ that.$timestampToTime(startTime) + '~' + that.$timestampToTime(endTime)+'  '+ '采用' + localType +'定位(精准到' + meter +'米)';
+                })*/
+            },
+            //计算角度
+            getAngle2(x1, y1, x2, y2) {
+                var ly = Math.sin(x2 - x1) * Math.cos(y2);
+                var lx = Math.cos(y1) * Math.sin(y2) - Math.sin(y1) * Math.cos(y2) * Math.cos(x2 - x1);
+                var brng = Math.atan2(ly, lx);
+                brng = brng * 180 / Math.PI;
+                if (brng < 0)
+                    brng = brng + 360;
+                return brng;
+            },
+            //创建折线
+            polylineCreate(map, pointsArry) {
+                let lineArr = [],lineArr2 = [];
+                console.log(pointsArry)
+                pointsArry.forEach(function(value, index, array) {
+                    lineArr.push([value.lng,value.lat]);
+                })
+                var polyline = new AMap.Polyline({
+                    map: map,
+                    path: lineArr,
+                    showDir:true,
+                    strokeColor: "#71afe2",  //线颜色
+                    borderWeight:3,
+                    strokeWeight:8    //线宽
+                    /*strokeOpacity: 1,
+                    borderWeight:0*/
+                });
+                polyline.setMap(map)
+
+                // 缩放地图到合适的视野级别
+                //map.setFitView([polyline]);
+
+            },
+            handleChange(value) {
+                this.timeBtn=new Date(value).format("yyyy-MM-dd");
+                this.nowDate=new Date(value).format("yyyy-MM-dd");
+                this.getData();
+            },
+            openTime() {
+                this.$refs.picker2.open();
+            },
+            getYesterday: function (time) {
+                let yesterday = new Date(time);
+                yesterday.setTime(yesterday.getTime() - 24 * 60 * 60 * 1000);
+                let reduce = '-';
+
+                this.timeBtn = yesterday.getFullYear() + reduce + this.addZero(yesterday.getMonth() + 1) + reduce + this.addZero(yesterday.getDate());
+                this.getData();
+            },
+            getTomorrow: function (time) {
+                let tomorrow = new Date(time);
+                let nowDate2 = this.getNowFormatDate();
+
+                tomorrow.setTime(tomorrow.getTime() + 24 * 60 * 60 * 1000);
+                let reduce = '-';
+                let year = tomorrow.getFullYear() + reduce + this.addZero(tomorrow.getMonth() + 1) + reduce + this.addZero(tomorrow.getDate());
+
+                let t_timestamp = Math.round(new Date(year) / 1000);
+                let n_timestamp = Math.round(new Date(nowDate2) / 1000);
+                if(t_timestamp > n_timestamp){
+                    return Toast('不能超过今天');
+                }else{
+                    this.timeBtn = year;
+                }
+                this.getData();
+            },
+            getNowFormatDate: function () {
+                let date = new Date();
+                let reduce = "-";
+                let currentdate = date.getFullYear() + reduce + this.addZero(date.getMonth() + 1) + reduce + this.addZero(date.getDate());
+
+                return currentdate;
+            },
+            addZero: function (time) {
+                if (time >= 1 && time <= 9) {
+                    time = "0" + time;
+                }
+                return time;
+            }
+        }
+    });
+    //self.map.add(self.dingweiMarker);
+    eruda.init();
+</script>
+</html>
