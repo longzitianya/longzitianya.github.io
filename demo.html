@@ -55,9 +55,10 @@
               draggable: true
           })
         	circle.setMap(map)
+		// 缩放地图到合适的视野级别
+        	map.setFitView(map.getAllOverlays(),2);
         });
-        // 缩放地图到合适的视野级别
-        map.setFitView(map.getAllOverlays(),1.5);
+       
         //map.setShowWithCenterAndRange(center, radius);
     }
     if (window.attachEvent) {
