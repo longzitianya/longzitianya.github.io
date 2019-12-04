@@ -40,18 +40,20 @@
         });
         //marker2.setMap(self.map);
         map.add(marker2);
-         var  iconCar = new CMMap.Icon({
-                //size:new CMMap.Size(20,20), // 图标尺寸
-                imageSize:  new CMMap.Size(20,20),
-               image: './car1.png', // Icon的图像
-                imageOffset: new CMMap.Pixel(-10,-10)
-              });
+          var center2 = [116.443322, 39.900256];
+	    var  iconCar = new CMMap.Icon({
+		//size:new CMMap.Size(20,20), // 图标尺寸
+		imageSize:  new CMMap.Size(25,42),
+	       image: './car1.png', // Icon的图像
+		imageOffset: new CMMap.Pixel(0,0)
+	      });
         var marker3 = new CMMap.Marker({
           offset: new CMMap.Pixel(0,0),
           icon: iconCar, // 添加 Icon 实例
-          position: center, // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+          position: center2, // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
           title: 'car'
         });
+        //marker2.setMap(self.map);
         //marker2.setMap(self.map);
         map.add(marker3);
        var centerdata=[{"lng":116.433322, "lat":39.900236,"radius":100},{"lng":116.533342, "lat":39.900256,"radius":200},{"lng":116.733322, "lat":39.900256,"radius":500}];
