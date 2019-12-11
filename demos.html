@@ -33,6 +33,10 @@
             center: center,
             zoom: 14
         });
+	var ControlBar = new CMMap.ControlBar({
+                    position:{bottom:'-25px',right:'10px'}
+                });
+        map.addControl(ControlBar);    
 	var marker2 = new CMMap.Marker({
           offset: new CMMap.Pixel(0,0),
           //icon: iconCar, // 添加 Icon 实例
