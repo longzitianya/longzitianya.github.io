@@ -35,14 +35,16 @@
 </head>
 <body >
 <div id="container"></div>
-</body>
 <script  type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=4af62d0316bc14f5d241333961cddbb9&plugin=AMap.Geolocation,AMap.Geocoder,AMap.CitySearch,AMap.GraspRoad" ></script>
-<!-- UI组件库 1.0 -->
-<script src="https://webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
-<script type="text/javascript" src="https://sgdt.mlocso.com:8443/VectorMapAbility/jssdk/auth?v=2.0&key=1586sax375sk36n566b0rc5khzs836bh&name=bundle
-&name=bundle"></script>
+	<!-- UI组件库 1.0 -->
+	<script src="https://webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>  
+	<!-- <script type="text/javascript" src="https://js.mlocso.com:9095/SDKService/jssdk/auth?v=2.0&key=1586sax375sk36n566b0rc5khzs836bh&name=bundle&plugin=CMMap.ToolBar"></script>-->   
+	<script type="text/javascript" src="https://sgdt.mlocso.com:8443/VectorMapAbility/jssdk/auth?v=2.0&key=1586sax375sk36n566b0rc5khzs836bh&name=bundle&plugin=CMMap.ToolBar"></script>
+	
+</body>
+<script src="https://cdn.jsdelivr.net/npm/eruda"></script>
 <script type="text/javascript">
-
+	eruda.init();
     function initMap() {
         var center = [116.433322, 39.900256];
         var radius = 1000;
