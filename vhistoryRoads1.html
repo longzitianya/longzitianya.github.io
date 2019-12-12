@@ -348,13 +348,15 @@
                 if(_this.map===null) {
                     _this.map = new CMMap.Map("mapContainer", {
                         resizeEnable: true,
-                        rotateEnable: true,
+                        rotateEnable: false,
                         zoom: 4
                     });
                 }
 
                 var ControlBar = new CMMap.ControlBar({
-                    position:{bottom:'-25px',right:'10px'}
+                    position:{bottom:'-25px',right:'10px'},
+                    showZoomBar : true ,
+                    showControlButton : false
                 });
                 _this.map.addControl(ControlBar);
                 _this.map.clearMap();
