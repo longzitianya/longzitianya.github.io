@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,minimal-ui">
+    <title>和地图点击事件验证</title>
+    <link rel="stylesheet" href="https://cache.amap.com/lbs/static/main1119.css" />
+    <link rel="stylesheet" href="https://unpkg.com/muse-ui/dist/muse-ui.css">
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/mint-ui/lib/style.css">
+    <style type="text/css">
+        body {
+            position: absolute;
+            margin: 0;
+            width: 100%;
+            height: 100%;
+        }
+        #app{
+            position: absolute;
+            left:0;
+            top:0;
+            width: 100%;
+            height:100%;
+            transition: all 0.5s cubic-bezier(0.55,0,0.1,1);
+            overflow: hidden;
+            background: #F0EFF5;
+        }
+        #mapContainer{
+            left: 0px;
+            top: 0px;
+        }
+
+        #dateSelected{
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #f5f5f5;
+            z-index: 99;
+            padding: 10px 0;
+        }
+        .timeselectbox{
+            height:40px;
+            background:#FFF;
+        }
+        .timeselectbox li{
+            list-style: none;
+            float:left;
+            height:35px;
+            line-height:35px;
+            margin-top:5px;
+            color:black;
+        }
+        .daybefore{
+            width:28%;
+            padding-left:10px;
+            font-size:13.5px;
+        }
+        .dateselect{
+            border-radius: 3px;
+            background:#fff;
+            width:44%;
+            text-align:center;
+        }
+        .nextday{
+            text-align: right;
+            width:28%;
+            padding-right:10px;
+            font-size:13.5px;
+        }
+        .mint-button--default {
+            color: #2f343b;
+            background-color: #ffffff;
+            box-shadow: none!important;
+            height: 30px;
+            font-size: 15px;
+        }
+        #dateSelected .inline{
+            float: left;
+            line-height: 20px;
+            /*display: inline;*/
+        }
+        .predate,.nextdate{
+            width: 20%;
+            text-align: center;
+
+        }
+        .selectDate{
+
+            width: 59%;
+            text-align: center;
+        }
+        #arcMapContainer{
+            width: 100%;
+            height:100%;
+        }
+        #locationInfor{
+            width: 100%;
+            position: fixed;
+            left: 0;
+            bottom: 0px;
+            padding: 5px 0;
+            background-color: #fff;
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+            z-index: 9;
+        }
+        #locationInfor2{
+            width: 100%;
+            position: fixed;
+            left: 0;
+            bottom: 55px;
+            padding: 5px 0;
+            background-color: #fff;
+            border-top: 1px solid #ddd;
+            border-bottom: 1px solid #ddd;
+            z-index: 9;
+        }
+        .inforTitle,.inforTimer{
+            padding-left: 10px;
+            padding-right: 10px;
+            font-size: 12px;
+        }
+        .inforTitle{
+            padding-top: 10px;
+            margin-bottom: 10px;
+            font-size: 12px;
+        }
+        #bottomWraper{
+            width: 100%;
+            padding:.1em 0;
+            background-color: #ffffff;
+            position: fixed;
+            left: 0;
+            bottom: 0;
+        }
+        .bottomItem{
+            width: 25%;
+            text-align: center;
+            float: left;
+            overflow: hidden;
+            height: 53px;
+            padding: 8px 0;
+        }
+        .itemImg{
+            width: 100%;
+            text-align: center;
+            height: 70%;
+            overflow: hidden;
+        }
+
+        .itemTxt{
+            font-size: 15px;
+            line-height: 10px;
+        }
+        .itemImg img{
+            height: 70%;
+        }
+        .blue{
+            color:#71afe2 ;
+        }
+        .amap-icon img,
+        .amap-marker-content img{
+            width: 25px;
+            height: 34px;
+        }
+
+        .marker {
+            top: -20px;
+            right: -118px;
+            color: #fff;
+            padding: 4px 10px;
+            box-shadow: 1px 1px 1px rgba(10, 10, 10, .2);
+            white-space: nowrap;
+            font-size: 12px;
+            font-family: "";
+            background-color: #25A5F7;
+            border-radius: 3px;
+        }
+        .cmmap-luopan {
+            width: 184px;
+            display: none;
+        }
+        .amap-luopan{
+            width: 184px;
+            display: none;
+        }
+        .geoLocation{
+            background-size: 32px 32px!important;
+            background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAYAAAByDd+UAAACjklEQVRIS72WTWgTURSFvzdD0nZRXRUXdeFK0ZXgTlxYEKfJwmYs7cYiikWF4qLg/8Z21YqgoFDxByqUUonKTBSSzqBYUFwpuImiCIq4UhDBjYRmbplJfzJpEjstyV2+ue+ceeede99VRA3buQacRbxRzMRI1O0q0oZM7jCiPVneIyQxjVwUjGiE9uw9UINlBEOkjInGEabftBH/OwX0gpojPt9PMvmrcYRLyFZuP2ZiLgrRUm40SesxZLObKMS3kjrwoV5abcKMO4BwApEZ2uQx3d2/AyDbnQQ5huIunjeGmfhGxrkf5PqhyBMrdtWSujrhsxedFOc/Au2LIAP0GNNYuRGUdmXFpd5xWmSGgv6v4lTjpIxL1U5andDKbUNpX0PAZuIBtjMGXCwri0Faik8p6N+B1jKCCVLG0NoJA+mc68BwSLpstoOC9hrUduAd6EeDO7Pd2yCnFwneI95wLVOtzzTVXGq5u9HZSTGWw+z6U8s4jSX0f0zTexHZgvAK07ilyLiHEDGAPK3ycNmNlnMSxZ1Qz7TdJHg3SpLKZ1LdOxadu1pSFfsJxXzopEr1K2znLbAn5Eb7+a5QslL99Bx8RGVrU+oCsfnJqqaBzcCRCmm/VCf0pVDay1UutZwpFANlIOOI54RySx+ngTjQFyIU+VFbUtu5CZwJudR2B8E7tyxp3NsXFLjtpEPg4nWh6R2I+OsrId5odNOk03Fi7XtX2d5vCn5oej6Q34+M24fIZYRONCx6jFPRCX2ghpTFfwtfzdHq9Qau3nDhr7W1+QaKFd2Nt7amN+/ShTfxearVCOutb/gBrgfe1BHDnv1UKvxmDFEZ9zwiV8sO3+AxsZKw4YNwaRLwR4yx9Y76CylRZ2A9683RAAAAAElFTkSuQmCC)  !important ;
+            background-repeat: no-repeat;
+            width: 32px;
+            height:32px;
+            border: none;
+            border-radius: 15px;
+            background: #fff;
+            position: absolute;
+            bottom:250px;
+            left:10px;
+        }
+        .geoLocation:active,.geoLocation:focus{
+            border: none;
+            outline:none;
+        }
+    </style>
+
+</head>
+
+<body >
+<div id="app">
+    <div style="position: absolute;left:10px;bottom:10px;z-index:10;">
+        <button  title='调整视野' @click="setFitViewAll"  class="geoLocation"  ></button>
+    </div>
+    <div id="mapContainer" :style="{'width':vWidth+'px','height':vHeight+'px','position':'static'}"></div>
+</div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+<script src="https://unpkg.com/muse-ui/dist/muse-ui.js"></script>
+<!-- 引入组件库 -->
+<script src="https://unpkg.com/mint-ui/lib/index.js"></script>
+<script  type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=4af62d0316bc14f5d241333961cddbb9&plugin=AMap.Geolocation,AMap.Geocoder,AMap.CitySearch,AMap.GraspRoad" ></script>
+<!-- UI组件库 1.0 -->
+<script src="https://webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
+<script type="text/javascript" src="https://sgdt.mlocso.com:8443/VectorMapAbility/jssdk/auth?v=2.0&key=1586sax375sk36n566b0rc5khzs836bh&plugin=CMMap.ToolBar"></script>
+<script src="https://unpkg.com/gcoord/dist/gcoord.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+<script type="text/javascript" >
+
+  Vue.prototype.getViewportSize = function(){
+    return {
+      width: window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+      height: window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
+    };
+  };
+  var app= new Vue({
+    el:"#app",
+    data:{
+      radius:500,
+      circlePath: {
+        center: {
+          lng: 123.46231,
+          lat: 41.719623
+        }
+      },
+      map:null,
+      vWidth:320,
+      vHeight:568
+    },
+    watch: {
+
+    },
+    activated() {
+    },
+    created(){
+      this.vWidth=this.getViewportSize().width;
+      this.vHeight=this.getViewportSize().height-70-40;
+    },
+    mounted(){
+      this.initMap();
+    },
+    methods: {
+      setFitViewAll(){
+        this.map.setFitView(this.map.getAllOverlays(),2);
+      },
+
+      initMap(){
+        var   _this = this; // 改变this作用域
+        var resultArry = [];
+        if(_this.map===null) {
+          _this.map = new CMMap.Map("mapContainer", {
+            resizeEnable: true,
+            rotateEnable: false,
+            zoom: 4
+          });
+        }
+
+        var ControlBar = new CMMap.ControlBar({
+          position:{bottom:'-25px',right:'10px'},
+          showZoomBar : true ,
+          showControlButton : false
+        });
+        _this.map.addControl(ControlBar);
+        self.map.panTo([self.circlePath.center.lng,self.circlePath.center.lat]);
+        self.map.on("click", function(e) {
+          //self.map.clearMap();
+          self.circlePath.center.lng=e.lnglat.lng;
+          self.circlePath.center.lat=e.lnglat.lat;
+          //self.keyword=self.geocoderAddress(self.circlePath.center.lng,self.circlePath.center.lat);
+          AMap.plugin('AMap.Geocoder', function() {
+            var geocoder = new AMap.Geocoder({});
+            geocoder.getAddress([self.circlePath.center.lng,self.circlePath.center.lat], function(status, result) {
+              if (status === 'complete' && result.info === 'OK') {
+                // result为对应的地理位置详细信息
+                var address = result.regeocode.formattedAddress;
+                self.keyword=address;
+              }
+            })
+          });
+          self.map.remove([self.circleMarker,self.carMarker]);
+          self.circleMarker=null;
+          self.carMarker=null;
+          self.createCarMaker(self.circlePath.center.lng,self.circlePath.center.lat);
+          self.createCircle(self.circlePath.center.lng,self.circlePath.center.lat);
+          self.map.panTo([self.circlePath.center.lng,self.circlePath.center.lat]);
+
+      },
+       createCarMaker(lng,lat){
+          let self=this;
+          if(self.carMarker===null){
+
+            var iconCar = new CMMap.Icon({
+              // size: new CMMap.Size(25,42), // 图标尺寸
+              imageSize: new CMMap.Size(32,32),
+              imageOffset: new CMMap.Pixel(-16,-32), // 图像相对展示区域的偏移量，适于雪碧图等 imageSize: new CMMAP.Size(40, 50) // 根据所设置的大小拉伸或压缩图片
+            });
+            self.carMarker= new CMMap.Marker({
+              offset: new CMMap.Pixel(-9,-31),
+              //icon: iconCar, // 添加 Icon 实例
+              position: new CMMap.LngLat(lng,lat), // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+              title: 'car'
+            });
+          }
+          self.map.add(self.carMarker);
+          // self.carMarker.setMap(self.map);
+          //self.map.setFitView();
+        },
+        createCircle(lng,lat) {
+          let self=this;
+          console.log(self.radius)
+          if(self.circleMarker===null){
+            self.circleMarker = new CMMap.Circle({
+              center: new CMMap.LngLat(lng,lat), // 圆心位置
+              radius: self.radius,  //半径
+              strokeColor: "#1791fc",
+              strokeWeight: 2,
+              strokeOpacity: 0.8,
+              fillOpacity: 0.8,
+              fillColor: '#1791fc'
+            });
+          }
+          //self.circleMarker.setMap(self.map);
+          self.map.add(self.circleMarker);
+          //self.map.setFitView();
+        }
+    }
+  });
+  //self.map.add(self.dingweiMarker);
+  eruda.init();
+</script>
+</html>
