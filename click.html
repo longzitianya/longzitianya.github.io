@@ -127,7 +127,7 @@
     },
     created(){
       this.vWidth=this.getViewportSize().width;
-      this.vHeight=this.getViewportSize().height-70-40;
+      this.vHeight=this.getViewportSize().height;
     },
     mounted(){
       this.initMap();
@@ -161,14 +161,15 @@
           //self.map.clearMap();
           self.circlePath.center.lng=e.lnglat.lng;
           self.circlePath.center.lat=e.lnglat.lat;
-          //self.keyword=self.geocoderAddress(self.circlePath.center.lng,self.circlePath.center.lat);
-          });
           self.map.remove([self.circleMarker,self.carMarker]);
           self.circleMarker=null;
           self.carMarker=null;
           self.createCarMaker(self.circlePath.center.lng,self.circlePath.center.lat);
           self.createCircle(self.circlePath.center.lng,self.circlePath.center.lat);
           self.map.panTo([self.circlePath.center.lng,self.circlePath.center.lat]);
+          //self.keyword=self.geocoderAddress(self.circlePath.center.lng,self.circlePath.center.lat);
+          });
+
 
       },
        createCarMaker(lng,lat){
