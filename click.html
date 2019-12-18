@@ -265,10 +265,10 @@
       },
 
       initMap(){
-        var   _this = this; // 改变this作用域
+        var   self = this; // 改变this作用域
         var resultArry = [];
-        if(_this.map===null) {
-          _this.map = new CMMap.Map("mapContainer", {
+        if(self.map===null) {
+          self.map = new CMMap.Map("mapContainer", {
             resizeEnable: true,
             rotateEnable: false,
             zoom: 4
@@ -280,7 +280,7 @@
           showZoomBar : true ,
           showControlButton : false
         });
-        _this.map.addControl(ControlBar);
+        self.map.addControl(ControlBar);
         self.map.panTo([self.circlePath.center.lng,self.circlePath.center.lat]);
         self.map.on("click", function(e) {
           //self.map.clearMap();
