@@ -286,15 +286,6 @@
           self.circlePath.center.lng=e.lnglat.lng;
           self.circlePath.center.lat=e.lnglat.lat;
           //self.keyword=self.geocoderAddress(self.circlePath.center.lng,self.circlePath.center.lat);
-          AMap.plugin('AMap.Geocoder', function() {
-            var geocoder = new AMap.Geocoder({});
-            geocoder.getAddress([self.circlePath.center.lng,self.circlePath.center.lat], function(status, result) {
-              if (status === 'complete' && result.info === 'OK') {
-                // result为对应的地理位置详细信息
-                var address = result.regeocode.formattedAddress;
-                self.keyword=address;
-              }
-            })
           });
           self.map.remove([self.circleMarker,self.carMarker]);
           self.circleMarker=null;
