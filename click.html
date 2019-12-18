@@ -270,7 +270,7 @@
           self.map = new CMMap.Map("mapContainer", {
             resizeEnable: true,
             rotateEnable: false,
-            zoom: 4
+            zoom: 14
           });
         }
 
@@ -280,6 +280,9 @@
           showControlButton : false
         });
         self.map.addControl(ControlBar);
+        self.map.panTo([self.circlePath.center.lng,self.circlePath.center.lat]);
+        self.createCarMaker(self.circlePath.center.lng,self.circlePath.center.lat);
+        self.createCircle(self.circlePath.center.lng,self.circlePath.center.lat);
         self.map.panTo([self.circlePath.center.lng,self.circlePath.center.lat]);
         self.map.on("click", function(e) {
           //self.map.clearMap();
