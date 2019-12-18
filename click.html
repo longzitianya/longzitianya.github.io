@@ -94,12 +94,8 @@
 <!-- UI组件库 1.0 -->
 <script src="https://webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
 <script type="text/javascript" src="https://sgdt.mlocso.com:8443/VectorMapAbility/jssdk/auth?v=2.0&key=1586sax375sk36n566b0rc5khzs836bh&plugin=CMMap.ToolBar"></script>
-<script src="https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
 <script type="text/javascript" >
-  $(function() {//引入jquery前提下
-    FastClick.attach(document.body);
-  });
   Vue.prototype.getViewportSize = function(){
     return {
       width: window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
