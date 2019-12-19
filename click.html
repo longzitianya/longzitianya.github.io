@@ -146,12 +146,15 @@
           });
         }
 
-        var ControlBar = new CMMap.ControlBar({
-          position:{bottom:'-25px',right:'10px'},
-          showZoomBar : true ,
-          showControlButton : false
+        self.map.plugin(["CMMap.ControlBar"], function() {
+          // map.plugin('CMMap.ToolBar' , function () {
+          var ControlBar = new CMMap.ControlBar({
+            position:{bottom:'-25px',right:'10px'},
+            showZoomBar : true ,
+            showControlButton : false
+          });
+          self.map.addControl(ControlBar);
         });
-        self.map.addControl(ControlBar);
         self.map.panTo([self.circlePath.center.lng,self.circlePath.center.lat]);
         self.createCarMaker(self.circlePath.center.lng,self.circlePath.center.lat);
         self.createCircle(self.circlePath.center.lng,self.circlePath.center.lat);
