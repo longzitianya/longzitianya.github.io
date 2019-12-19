@@ -93,8 +93,9 @@
 <script  type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=4af62d0316bc14f5d241333961cddbb9&plugin=AMap.Geolocation,AMap.Geocoder,AMap.CitySearch,AMap.GraspRoad" ></script>
 <!-- UI组件库 1.0 -->
 <script src="https://webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
-<script type="text/javascript" src="https://sgdt.mlocso.com:8443/VectorMapAbility/jssdk/auth?v=2.0&key=1586sax375sk36n566b0rc5khzs836bh&plugin=CMMap.ToolBar"></script>
-<script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+	<!--<script type="text/javascript" src="https://sgdt.mlocso.com:8443/VectorMapAbility/jssdk/auth?v=2.0&key=1586sax375sk36n566b0rc5khzs836bh&plugin=CMMap.ToolBar"></script>-->
+    <script type="text/javascript" charset="utf-8" src="http://47.92.164.5:9091/SDKService/jssdk/auth?v=3.0&key=1234"></script>
+<script src="https://cdn.bootcss.com/vConsole/3.3.4/vconsole.min.js"></script>
 <script type="text/javascript" >
   Vue.prototype.getViewportSize = function(){
     return {
@@ -211,6 +212,7 @@
     }
   });
   //self.map.add(self.dingweiMarker);
-  eruda.init();
+  //eruda.init();
+    vConsole = new VConsole();
 </script>
 </html>
