@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,minimal-ui">
+     <meta http-equiv="Cache-Control" content="no-cache, no-store" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no">
+    <!--<meta http-equiv="x-rim-auto-match" content="none">-->
+    <meta name="full-screen" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"><!-- iPhone私有标签，将网站添加到主屏幕快速启动方式，针对safari顶端状态条的样式 -->
+    <!-- QQ应用模式 -->
+    <meta name="x5-orientation" content="portrait"><!-- QQ强制竖屏 -->
+    <meta name="screen-orientation" content="portrait"><!-- uc强制竖屏 -->
+	<title>地图展示</title>
+
+    <style type="text/css">
+        body {
+            position: absolute;
+            margin: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        #mapContainer {
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            float: left;
+        }
+    </style>
+	<script  type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=4af62d0316bc14f5d241333961cddbb9&plugin=AMap.Geolocation,AMap.Geocoder,AMap.CitySearch,AMap.GraspRoad" ></script>
+    <!-- UI组件库 1.0 -->
+    <script src="https://webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
+    <script type="text/javascript" charset="utf-8" src="http://47.92.164.5:9091/SDKService/jssdk/auth?v=3.0&key=1234"></script>
+</head>
+
+<body >
+<!-- <input type="button" name="跳转" value="查询" onClick="map.panTo(new CMMap.LngLat( 120 , 32 ))"  /> -->
+<!-- style="position:absolute" -->
+<div id="mapContainer" style="position: relative;cursor: pointer;"></div>
+</body>
+<script>
+
+    var map;
+    var dom = document.getElementById('mapContainer')
+
+    // var pointsArry = [];//存储所有转换成百度经纬度的点
+    var angles = [];
+    var resultArry = [ 
+
+        [123.42982804834686, 41.690609035891235] ,
+        [123.42977792988233, 41.690516222169194] ,
+        [123.42829538231385, 41.690059221948594] ,
+        [123.4280603951422, 41.68944635662136] ,
+        [123.42798546725885, 41.68876663428826] ,
+        [123.42644059289248, 41.689502917931456] ,
+        [123.42753720160948, 41.69376592839565] ,
+        [123.43489939237925, 41.69650279530463] ,
+        [123.43671914125251, 41.70051317868005] ,
+        [123.43686956432727, 41.70116630988079] ,
+        [123.43603529902842, 41.70163410580863] ,
+        [123.43726243348418, 41.70192042243145] ,
+        [123.4369327170356, 41.70152123665442]
+
+     ]
+
+
+     var dataInfor = [{"time":0,"beginTime":1542651762264,"endTime":1542684889000,"lon":123.42370042144084,"lat":41.688182543209976,"precision":30,"address":"辽宁省沈阳市东陵区(碧桂园公园里内)","locateType":3},{"time":0,"beginTime":1542685075000,"endTime":1542685075000,"lon":123.42365027309522,"lat":41.688089696566955,"precision":32,"address":"辽宁省沈阳市东陵区(碧桂园公园里内)","locateType":3},{"time":0,"beginTime":1542685200000,"endTime":1542685200000,"lon":123.42216658812416,"lat":41.68763141895944,"precision":30,"address":"辽宁省沈阳市东陵区高深路(碧桂园公园里内)","locateType":3},{"time":0,"beginTime":1542685262000,"endTime":1542685262000,"lon":123.42193150931163,"lat":41.68701844446907,"precision":38,"address":"辽宁省沈阳市东陵区高深路(碧桂园公园里内)","locateType":3},{"time":0,"beginTime":1542685324000,"endTime":1542685324000,"lon":123.42185662127233,"lat":41.6863387638757,"precision":30,"address":"辽宁省沈阳市东陵区高深路(跳蚤市场东213米)","locateType":3},{"time":0,"beginTime":1542685387000,"endTime":1542685387000,"lon":123.4203105633789,"lat":41.68707365334242,"precision":30,"address":"辽宁省沈阳市东陵区高深路(跳蚤市场北108米)","locateType":3},{"time":0,"beginTime":1542685449000,"endTime":1542685449000,"lon":123.42140732160289,"lat":41.69133690599267,"precision":550,"address":"辽宁省沈阳市东陵区(白塔公园内)","locateType":3},{"time":0,"beginTime":1542685512000,"endTime":1542685512000,"lon":123.42877607208106,"lat":41.69408077296186,"precision":69,"address":"辽宁省沈阳市东陵区白塔河路(东大软件园-东南2门南515米)","locateType":3},{"time":0,"beginTime":1542685571000,"endTime":1542685571000,"lon":123.43059747662495,"lat":41.69809277352689,"precision":30,"address":"辽宁省沈阳市东陵区世纪路41号(东软软件园-东南1门南103米)","locateType":3},{"time":0,"beginTime":1542685607000,"endTime":1542685607000,"lon":123.430748,"lat":41.698746,"precision":22,"address":"辽宁省沈阳市东陵区世纪路39号(东软软件园内)","locateType":1},{"time":0,"beginTime":1542685711000,"endTime":1542685659000,"lon":123.42991261803876,"lat":41.699212697964214,"precision":25,"address":"辽宁省沈阳市东陵区世纪路(东软软件园内)","locateType":3},{"time":0,"beginTime":1542685791000,"endTime":1542685791000,"lon":123.4311412718027,"lat":41.699500502128274,"precision":32,"address":"辽宁省沈阳市东陵区世纪路39号(东软软件园内)","locateType":3},{"time":0,"beginTime":1542685978000,"endTime":1542728701000,"lon":123.4308111838239,"lat":41.69910095578948,"precision":30,"address":"辽宁省沈阳市东陵区世纪路39号(东软软件园内)","locateType":3}]
+
+
+
+    function mapInit() {
+        CMMap.Conf._key = 1234;
+        // 传入‘HTMLDivElement’报错，只能传ID
+        // var map = new CMMap.Map( dom , {
+        map = new CMMap.Map("mapContainer", {
+            baseLayer: true,
+            building: true,
+            label: true,
+            buildingShadow: true,
+            buildingTranslucent: true,
+            zoom: 13,
+            // mapStyle: 'cmmap://styles/whitesmoke',
+            dragEnable: true ,
+            animateEnable : false ,   // 惯性拖拽
+            eventListenerType: 'moveend' ,
+            // alwaysRender:  false    // 实时渲染，松开鼠标后渲染
+            isHotspot : true ,     // 是否开启地图热点，默认false 不打开
+            // center:[123.42644059289248, 41.689502917931456]
+            // center:[123.43489939237925, 41.69650279530463]
+        });
+        // console.log( map )
+        // console.log( map.opts.animateEnable )
+
+
+
+        //加载比例尺插件
+         map.plugin('CMMap.Scale',function () {
+                var scale = new CMMap.Scale();
+                // scale.position('RB');
+                // scale.offset(new CMMap.Pixel(100,100));
+                map.addControl(scale);
+        })
+         //在地图中添加ToolBar插件
+                map.plugin(["CMMap.ToolBar"], function() {
+                // map.plugin('CMMap.ToolBar' , function () {
+                    toolBar = new CMMap.ToolBar(); 
+                    map.addControl(toolBar);
+                });
+			map.plugin(["CMMap.ControlBar"], function() {
+                // map.plugin('CMMap.ToolBar' , function () {
+                  var ControlBar = new CMMap.ControlBar({
+					position:{bottom:'-25px',right:'10px'},
+					showZoomBar : true ,
+					showControlButton : false
+				  });
+				  map.addControl(ControlBar);
+                });
+		
+
+
+
+
+
+
+
+
+                // markers(dataInfor,resultArry,map);
+                markers(resultArry, map, dataInfor);//加载多个标注点
+
+
+                //在地图上加载折线
+                // polylineCreate(map, pointsArry);
+
+
+
+                // map.on( 'dragging' , _=>{
+                //     // console.log( angles )
+                //         markers(resultArry, map, dataInfor);//加载多个标注点
+                //     })
+
+        
+    }
+
+
+
+
+//创建多个标注点并把折线显示出来(箭头图标)，点击每个点显示对应数据
+       function     markers(resultArry, map, dataInfor){
+                let _this =this;
+                let routerinfor=[];//获取除去起始点 的其他点信息
+                let pointsArry = [];//存储所有转换成百度经纬度的点
+                /*  let myIcon = new BMap.Icon("./lishi2.png", new BMap.Size(20,20),{imageSize:new BMap.Size(20,20)}); // 自定义图标*/
+                let myIcon = new CMMap.Icon({
+                    //size:new CMMap.Size(20,20), // 图标尺寸
+                    imageSize:  new CMMap.Size(20,20),
+                    image: './lishi2.png', // Icon的图像
+                    imageOffset: new CMMap.Pixel(-10,-10)
+                });
+                let data_lenght = resultArry.length;
+                // let angles = [];
+                //获取所有点
+                for (var i = 0; i < data_lenght; i++) {
+                    pointsArry.push(new CMMap.LngLat(resultArry[i][0], resultArry[i][1]));
+                };
+                routerinfor=dataInfor.slice(1,data_lenght-1);
+                //获取除起始点的其他点
+                let routerPoints = pointsArry.slice(1, data_lenght - 1);
+                //获取除起始点以外的其他点个数
+                let routerLenght = routerPoints.length; //10
+                //获取角度集合
+                for (var t = 1; t < data_lenght - 1; t++) {
+                    let singleAngle = getAngle2(pointsArry[t].lat, pointsArry[t].lng, pointsArry[t + 1].lat, pointsArry[t + 1].lng);
+                    angles.push(singleAngle);
+                };
+
+
+// console.log( '图表角度' )
+// console.log( angles )
+
+
+                let pointsArr =new Array();
+                for (var u = 0; u < routerLenght; u++) {
+                    let points = new CMMap.LngLat(routerPoints[u].lng, routerPoints[u].lat);
+                    pointsArr.push(points)
+                    console.log("角度："+angles[u]);
+
+                    // var  marker = new CMMap.Marker({
+                    let  marker = new CMMap.Marker({
+                        offset: new CMMap.Pixel(0,0),
+                        // autoRotation: true ,
+                        angle:angles[u],
+                        icon: myIcon, // 添加 Icon 实例
+                        position: points // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+                        // rotation: angles[u]
+                    });
+
+                    let content=routerinfor[u].address;
+                    let starttime=routerinfor[u].beginTime;
+                    let endtime=routerinfor[u].endTime;
+                    // let localType = getLocateType(routerinfor[u].locateType);
+                    let meter = routerinfor[u].precision;
+
+                    //map.addOverlay(marker);
+
+                    marker.setMap(map);
+                    // marker.setMap(map);
+
+                    // map.setFitView(null,2);
+                    //每个点坐标点 击出现对应信息
+                    // addClickHandler(marker,content,,starttime,endtime,localType,meter);
+
+                };
+                let startEnd_Icon = new CMMap.Icon({// 起点终点图标
+                    // size:new CMMap.Size(42,42), // 图标尺寸
+                    imageSize: new CMMap.Size(42,42),
+                    image: './start.png', // Icon的图像
+                    imageOffset: new CMMap.Pixel(-10,-10)
+                });
+                let endPoint_Icon = new CMMap.Icon({//终点图标
+                    //size:new CMMap.Size(42,42), // 图标尺寸
+                    imageSize: new CMMap.Size(42,42),
+                    image: './end.png', // Icon的图像
+                    imageOffset: new CMMap.Pixel(-10,-10)
+                });
+                //改变起点图标
+                // let firstMark =  new CMMap.Marker({
+                //     position:new CMMap.LngLat(pointsArry[0].lng, pointsArry[0].lat),
+                //     icon: startEnd_Icon
+                // });
+                // firstMark.setMap(map);
+                //起点图标点击对应信息
+                // addClickHandler(firstMark,dataInfor[0].address,_this,dataInfor[0].beginTime,dataInfor[0].endTime,_this.getLocateType(dataInfor[0].locateType),dataInfor[0].precision)
+                //firstMark.addEventListener("click",_this.addClickHandler(firstMark,dataInfor[0].address,_this,dataInfor[0].beginTime,dataInfor[0].endTime,_this.getLocateType(dataInfor[0].locateType),dataInfor[0].precision));
+                //改变终点图标
+                // let endMark =  new CMMap.Marker({
+                //     position:new CMMap.LngLat(pointsArry[data_lenght - 1].lng,pointsArry[data_lenght - 1].lat),
+                //     icon: endPoint_Icon
+                // });
+                // endMark.setMap(map);
+                //终点图标点击对应信息
+                // _this.addClickHandler(endMark,dataInfor[data_lenght - 1].address,_this,dataInfor[data_lenght - 1].beginTime,dataInfor[data_lenght - 1].endTime,_this.getLocateType(dataInfor[data_lenght - 1].locateType),dataInfor[data_lenght - 1].precision)
+                //endMark.addEventListener("click",_this.addClickHandler(endMark,dataInfor[data_lenght - 1].address,_this,dataInfor[data_lenght - 1].beginTime,dataInfor[data_lenght - 1].endTime,_this.getLocateType(dataInfor[data_lenght - 1].locateType),dataInfor[data_lenght - 1].precision));
+
+                //在地图上加载折线
+                polylineCreate(map, pointsArry);
+                console.log( pointsArry )
+                //map.setFitView(map.getAllOverlays(),2);
+                // map.panTo(new CMMap.LngLat(pointsArry[data_lenght- 1].lng,pointsArry[data_lenght- 1].lat));
+                //让所有点在视野范围内
+                // map.setFitView(null,1.5);
+
+            }
+
+
+
+
+//创建折线
+        function    polylineCreate(map, pointsArry) {
+                let lineArr = [];
+                pointsArry.forEach(function(value, index, array) {
+                    lineArr.push([value.lng,value.lat]);
+                })
+                // 绘制轨迹
+                var polyline = new CMMap.Polyline({
+                    map: map,
+                    // geodesic:true,
+                    isOutline:false, //是否描边
+                    // borderWeight:3, //描边的宽度
+                    // outlineColor:"#c3afe2", //线条描边颜色
+                    strokeWeight: 3 ,   //线宽
+                    strokeColor: "#71afe2",  //线颜色
+                    // strokeOpacity:0.2, //线条透明度    不好使
+                    // strokeStyle:'dashed',   //线样式 虚线:dashed    不好使
+                    // strokeDasharray:[10,10],    //勾勒形状轮廓的虚线和间隙的样式    不好使
+                    // lineCap:'square',
+                    // lineCap:'round',  //折线两端线帽的绘制样式 不好使
+                    // draggable:true,
+                    // lineJoin:'round',  // 折线拐点的绘制样式  不好使
+                    // lineJoin:'bevel',
+                    // showDir:true,  //显示箭头    不好使
+
+                    path: lineArr,
+                    // path:  [ [123.42982804834686, 41.690609035891235] ,[123.431778, 41.69853] ]  ,
+                });
+                polyline.setMap(map)
+
+// alert(111)
+
+                // 缩放地图到合适的视野级别
+                map.setFitView(null,2);
+                // map.panTo(new CMMap.LngLat(pointsArry[2].lng,pointsArry[2].lat));
+                // map.panTo(new CMMap.LngLat(pointsArry[data_lenght- 1].lng,pointsArry[data_lenght- 1].lat));
+
+            }
+
+
+
+
+//计算角度
+         function   getAngle2(x1, y1, x2, y2) {
+                var ly = Math.sin(x2 - x1) * Math.cos(y2);
+                var lx = Math.cos(y1) * Math.sin(y2) - Math.sin(y1) * Math.cos(y2) * Math.cos(x2 - x1);
+                var brng = Math.atan2(ly, lx);
+                brng = brng * 180 / Math.PI;
+                if (brng < 0)
+                    brng = brng + 360;
+                return brng;
+            }
+
+
+
+
+
+    if (window.attachEvent) {
+        window.attachEvent("onload", mapInit);//IE
+    } else {
+        window.addEventListener("load", mapInit, false);//FF
+    }
+</script>
+
+</html>
