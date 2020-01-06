@@ -1,21 +1,10 @@
 <!doctype html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,minimal-ui">
-     <meta http-equiv="Cache-Control" content="no-cache, no-store" />
-    <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="format-detection" content="telephone=no">
-    <!--<meta http-equiv="x-rim-auto-match" content="none">-->
-    <meta name="full-screen" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black"><!-- iPhone私有标签，将网站添加到主屏幕快速启动方式，针对safari顶端状态条的样式 -->
-    <!-- QQ应用模式 -->
-    <meta name="x5-orientation" content="portrait"><!-- QQ强制竖屏 -->
-    <meta name="screen-orientation" content="portrait"><!-- uc强制竖屏 -->
-	<title>路线规划</title>
+    <title>路线规划</title>
+    <meta http-equiv="Content-Type" content="text/html"/>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <meta charset="utf-8">
     <style>
         html,
         body,
@@ -25,9 +14,13 @@
             overflow: hidden;
         }
     </style>
-    <script type="text/javascript" charset="utf-8" src="https://js.mlocso.com:9095/SDKService/jssdk/auth?v=3.0&key=6dqw85mf84m2hq56rs7w4ad26tcow850&name=bundle"></script>
+   
 </head>
 
+<body onload="mapInit();">
+<div id="container" style="height:100%;width:100%;"></div>
+</body>
+ <script type="text/javascript" charset="utf-8" src="https://js.mlocso.com:9095/SDKService/jssdk/auth?v=3.0&key=6dqw85mf84m2hq56rs7w4ad26tcow850&name=bundle"></script>
 <script>
     var pathAll = [];
     var path = [];
@@ -154,7 +147,4 @@
 
     }
 </script>
-<body onload="mapInit();">
-<div id="container" style="height:100%;width:100%;"></div>
-</body>
 </html>
