@@ -1,0 +1,160 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,minimal-ui">
+     <meta http-equiv="Cache-Control" content="no-cache, no-store" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="format-detection" content="telephone=no">
+    <!--<meta http-equiv="x-rim-auto-match" content="none">-->
+    <meta name="full-screen" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"><!-- iPhone私有标签，将网站添加到主屏幕快速启动方式，针对safari顶端状态条的样式 -->
+    <!-- QQ应用模式 -->
+    <meta name="x5-orientation" content="portrait"><!-- QQ强制竖屏 -->
+    <meta name="screen-orientation" content="portrait"><!-- uc强制竖屏 -->
+	<title>路线规划</title>
+    <style>
+        html,
+        body,
+        #container {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+    </style>
+    <script type="text/javascript" charset="utf-8" src="https://js.mlocso.com:9095/SDKService/jssdk/auth?v=3.0&key=6dqw85mf84m2hq56rs7w4ad26tcow850&name=bundle"></script>
+</head>
+
+<script>
+    var pathAll = [];
+    var path = [];
+    var map;
+    function mapInit(){
+        map = new CMMap.Map("container", {
+            baseLayer: true, building: true, label: true, buildingShadow: true, buildingTranslucent: true, zoom: 11
+        });
+        map.setCenter(new CMMap.LngLat(123.45313434, 41.72357488));
+		//https://webapi.amap.com/theme/v1.3/markers/n/start.png
+		//https://webapi.amap.com/theme/v1.3/markers/n/end.png
+		var  markerStart = new CMMap.Marker({
+                position: {lng:123.497277,lat:41.826973},
+                icon: new CMMap.Icon({
+                      // size: new CMMap['Size'](iconW, iconH), // 图标尺寸
+                      imageSize: new CMMap.Size(19, 31),
+                      image: "https://webapi.amap.com/theme/v1.3/markers/n/start.png", // Icon的图像
+                      imageOffset: new CMMap.Pixel(0,0), // 图像相对展示区域的偏移量，适于雪碧图等 imageSize: new CMMAP.Size(40, 50) // 根据所设置的大小拉伸或压缩图片
+                    })
+               
+               
+            });
+		markerStart.setMap(map);	
+		 var markerEnd = new CMMap.Marker({
+                position: {lng:123.44017,lat:41.841707},
+               icon: new CMMap.Icon({
+                      // size: new CMMap['Size'](iconW, iconH), // 图标尺寸
+                      imageSize: new CMMap.Size(19, 31),
+                      image: "https://webapi.amap.com/theme/v1.3/markers/n/end.png", // Icon的图像
+                      imageOffset: new CMMap.Pixel(0,0), // 图像相对展示区域的偏移量，适于雪碧图等 imageSize: new CMMAP.Size(40, 50) // 根据所设置的大小拉伸或压缩图片
+                    })
+               
+               
+            });	
+		markerEnd.setMap(map);	
+			
+        map.plugin(["CMMap.RouteSearch"],function() {
+           /* var reoutPolicy = [CMMap.RouteSearch.Strategy.TimePriority,
+                CMMap.RouteSearch.Strategy.DistancePriority
+            ];*/
+            var s = new CMMap.RouteSearch.Drive({
+                origin: {lng:123.497277,lat:41.826973},	// 出发点坐标
+                destination: {lng:123.44017,lat:41.841707},	// 目的地坐标
+                strategy: 0x8011	// 驾驶策略
+                //wayPoints: [{lng:116.46615,lat:40.00917}, {lng:116.47615,lat:40.00937}]		// 途经点坐标数组
+            });
+            s.search(function(status, result){
+                console.log('Search end, status = ' + status);
+                if (status != 'complete') {
+                    alert(['Error: ', status, result]);
+                }else{
+                   // for (var i = 0; i <result.routes.length; ++i) {
+						  path = [];
+						  var r = result.routes[0];
+						  for(var j = 0; j < r.steps.length; j++){
+							var items = r.steps[j].coordinates;
+							for(var v = 0; v < items.length; v++){
+							  var lnglat = items[v];
+							  var lnglatObj = {};
+							  lnglatObj.lng = lnglat.lon;
+							  lnglatObj.lat = lnglat.lat;
+							  path.push(lnglatObj);
+							}
+
+						  }
+						  pathAll.push(path);
+					//	}
+					  /*var route = result.routes[0];
+					   var steps = route.steps;
+						if (!steps) return;
+						var ary = [];
+						for (var i_s = 0; i_s < steps.length; ++i_s) {
+							var coords = steps[i_s].coordinates;
+							if (!coords) continue;
+							for (var i_c = 0; i_c < coords.length; ++i_c) {
+								  var lnglat = coords[i_c];
+								  var lnglatObj = {};
+								  lnglatObj.lng = lnglat.lon;
+								  lnglatObj.lat = lnglat.lat;
+								  ary.push(lnglatObj);
+								   //path.push(lnglatObj);
+							}
+						}*/
+
+                    drawPoline(pathAll);
+                }
+            });
+        });
+
+
+
+
+    }
+
+
+    function drawPoline(paths){
+
+        for(var i = 0 ; i < paths.length; i++){
+            var itemPath = paths[i];
+
+            var color = "#6d6d6d";
+            if(i == 0){
+                color = "#00CD00";
+            }
+            var polyline = new CMMap.Polyline({
+                path: itemPath,
+                isOutline: true,
+                outlineColor: '#ffeeff',
+                borderWeight: 1,
+                strokeColor: color,
+                strokeOpacity: 1,
+                strokeWeight: 3,
+                // 折线样式还支持 'dashed'
+                strokeStyle: "solid",
+                // strokeStyle是dashed时有效
+                strokeDasharray: [10, 5],
+                lineJoin: 'round',
+                lineCap: 'round',
+                zIndex: 50,
+            });
+
+            polyline.setMap(map)
+        }
+
+    }
+</script>
+<body onload="mapInit();">
+<div id="container" style="height:100%;width:100%;"></div>
+</body>
+</html>
